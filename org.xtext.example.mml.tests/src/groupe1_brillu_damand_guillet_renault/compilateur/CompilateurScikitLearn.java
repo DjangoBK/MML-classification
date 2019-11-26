@@ -88,7 +88,7 @@ public class CompilateurScikitLearn {
 			if(gamma != null) {
 				algoSet += "gamma = \""+gamma+"\",";
 			}
-			if(kernel != null) {
+			if(algo.isKernelSpecified()) {
 				algoSet += "kernel = \""+kernel+"\"";
 			}
 			
@@ -103,7 +103,7 @@ public class CompilateurScikitLearn {
 			if(gamma != null) {
 				algoSet += "gamma = \""+gamma+"\",";
 			}
-			if(kernel != null) {
+			if(algo.isKernelSpecified()) {
 				algoSet += "kernel = \""+kernel+"\"";
 			}
 			
