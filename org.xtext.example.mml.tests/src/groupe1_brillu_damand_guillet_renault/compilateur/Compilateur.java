@@ -72,6 +72,7 @@ public class Compilateur {
 	public static String traitementAlgo(MMLModel result) {
 		//FrameworkLang framworkLang = result.getAlgorithm().getFramework();
 		EList<MLChoiceAlgorithm> algorithms = result.getAlgorithms();
+		String res = "";
 		for(MLChoiceAlgorithm mlcalgo : algorithms) {
 			FrameworkLang framworkLang = mlcalgo.getFramework();
 			if(framworkLang == FrameworkLang.SCIKIT) {
@@ -91,6 +92,7 @@ public class Compilateur {
 				return null;
 			}
 		}
+		return res;
 	}
 	
 	private static String mkValueInSingleQuote(String val) {
