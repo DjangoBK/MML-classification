@@ -4,6 +4,7 @@ import org.xtext.example.mydsl.mml.CrossValidation;
 import org.xtext.example.mydsl.mml.DT;
 import org.xtext.example.mydsl.mml.DataInput;
 import org.xtext.example.mydsl.mml.LogisticRegression;
+import org.xtext.example.mydsl.mml.MLChoiceAlgorithm;
 import org.xtext.example.mydsl.mml.MMLModel;
 import org.xtext.example.mydsl.mml.RandomForest;
 import org.xtext.example.mydsl.mml.SVM;
@@ -15,9 +16,11 @@ import org.xtext.example.mydsl.mml.impl.SVMImpl;
 public class CompilateurScikitLearn {
 	MMLModel result;
 	String importList;
+	MLChoiceAlgorithm algorithm;
 	
-	public CompilateurScikitLearn(MMLModel result) {
+	public CompilateurScikitLearn(MMLModel result, MLChoiceAlgorithm algorithm) {
 		this.result = result;
+		this.algorithm = algorithm;
 	}
 	
 	public String traitement() {
@@ -41,30 +44,29 @@ public class CompilateurScikitLearn {
 		res+= csvReading + "\n";
 		
 		//traitementStratificationMethod();
-		/*
-		if(result.getAlgorithm().getAlgorithm() instanceof DT) {
+		if(this.algorithm.getAlgorithm() instanceof DT) {
 			res += traitementDT();
 			res+=traitementMetric();
 		}
-		else if (result.getAlgorithm().getAlgorithm() instanceof SVM) {
+		else if (this.algorithm.getAlgorithm() instanceof SVM) {
 			res += traitementSVM();
 			res += traitementMetric();
 		}
-		else if (result.getAlgorithm().getAlgorithm() instanceof RandomForest) {
+		else if (this.algorithm.getAlgorithm() instanceof RandomForest) {
 			res += traitementRandomForest();
 		}
-		else if (result.getAlgorithm().getAlgorithm() instanceof LogisticRegression) {
+		else if (this.algorithm.getAlgorithm() instanceof LogisticRegression) {
 			res += traitementLogisticRegression();
 			res += traitementMetric();
-		}*/
+		}
 		//res =  traitementImport() + res;
 		return res;
 	}
 	
 	/** Algo SVM **/
 	public String traitementSVM() {
-		/*System.out.println("traitement SVM");
-		SVMImpl algo = (SVMImpl) result.getAlgorithm().getAlgorithm();
+		System.out.println("traitement SVM");
+		SVMImpl algo = (SVMImpl) this.algorithm;
 		
 		double test_size = result.getValidation().getStratification().getNumber()/100.0;
 		String size = "test_size = " + test_size +"\n";
@@ -115,8 +117,7 @@ public class CompilateurScikitLearn {
 		else {
 			return null;
 		}
-		return size + split + TRAIN_TEST_SPLIT +  algoSet; */
-		return null;
+		return size + split + TRAIN_TEST_SPLIT +  algoSet;		
 	}
 	
 	/** Algo DT **/

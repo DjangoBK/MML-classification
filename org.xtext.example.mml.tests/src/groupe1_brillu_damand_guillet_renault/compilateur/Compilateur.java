@@ -36,7 +36,7 @@ public class Compilateur {
 				+ "");
 		
 		String pandasCode = loadData(result);
-		//pandasCode += traitementAlgo(result);
+		pandasCode += traitementAlgo(result);
 		
 		Files.write(pandasCode.getBytes(), new File("mml_from_compiler.py"));
 		// end of Python generation
@@ -73,12 +73,13 @@ public class Compilateur {
 		//FrameworkLang framworkLang = result.getAlgorithm().getFramework();
 		EList<MLChoiceAlgorithm> algorithms = result.getAlgorithms();
 		String res = "";
+		System.err.println("traitement algo");
 		for(MLChoiceAlgorithm mlcalgo : algorithms) {
 			FrameworkLang framworkLang = mlcalgo.getFramework();
 			if(framworkLang == FrameworkLang.SCIKIT) {
 				System.err.println("scikit-learn");
-				CompilateurScikitLearn compilateur = new CompilateurScikitLearn(result);
-				return compilateur.traitement();
+				CompilateurScikitLearn compilateur = new CompilateurScikitLearn(result, mlcalgo);
+				res += compilateur.traitement();
 			}
 			else if(framworkLang == FrameworkLang.R) {
 				//CompilateurR compilateur = new CompilateurR(result);
@@ -87,9 +88,6 @@ public class Compilateur {
 			else if(framworkLang == FrameworkLang.JAVA_WEKA) {
 				//CompilateurWeka compilateur = new CompilateurWeka(result);
 				//return compilateur.traitement(result);
-			}
-			else {
-				return null;
 			}
 		}
 		return res;
