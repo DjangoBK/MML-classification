@@ -40,21 +40,23 @@ MLChoiceAlgorithm algo;
 				"\t\tInstances test = new Instances(data, trainSize, testSize);\n";
 		res += csvReading + split + size + TRAIN_TEST_SPLIT  + "\n";
 		
-		if(result.getAlgorithms().get(0).getAlgorithm() instanceof DT) {
+		if(algo.getAlgorithm() instanceof DT) {
 			res += traitementDT();
 			res+=traitementMetric();
 		}
-		else if (result.getAlgorithms().get(0).getAlgorithm() instanceof SVM) {
+		else if (algo.getAlgorithm() instanceof SVM) {
 			res += traitementSVM();
 			res+=traitementMetric();
 		}
-		/*else if (result.getAlgorithm().getAlgorithm() instanceof RandomForest) {
+		else if (algo.getAlgorithm() instanceof RandomForest) {
 			res += traitementRandomForest();
+			res += traitementMetric();
 		}
-		else if (result.getAlgorithm().getAlgorithm() instanceof LogisticRegression) {
+		else if (algo.getAlgorithm() instanceof LogisticRegression) {
 			res += traitementLogisticRegression();
+			res += traitementMetric();
 		}
-		//res =  traitementImport() + res;*/
+		//res =  traitementImport() + res;
 		return res;
 		
 	}
@@ -91,10 +93,22 @@ MLChoiceAlgorithm algo;
 	/** Algo DT **/
 	public String traitementDT() {		
 		System.out.println("traitement DT");
-		String algoSet = "\t\tClassifier cls = new J48();\n" + 
+		return "\t\tClassifier cls = new J48();\n" + 
 				"\t\tcls.buildClassifier(train);\n";
-		
-		return algoSet;
+	}
+	
+	/** Algo Ramdom Forest **/
+	public String traitementRandomForest() {
+		System.out.println("traitement random forest");
+		return "\t\tClassifier cls = new RandomForest();\n" + 
+				"\t\tcls.buildClassifier(train);\n";
+	}
+	
+	/** Algo Logistic Regession **/
+	public String traitementLogisticRegression() {
+		System.out.println("traitement logistic regression");
+		return "\t\tClassifier cls = new Logistic();\n" + 
+				"\t\tcls.buildClassifier(train);\n";
 	}
 	
 	/** traitement de la classification metric : accuracy, recall, f1 ou precision**/
@@ -132,7 +146,17 @@ MLChoiceAlgorithm algo;
 	}
 
 	public String ImportAndMain() {
-		return "public class test {\n" + 
+		return "import java.io.File;\n" + 
+				"import java.util.Random;\n" + 
+				"\n" + 
+				"import weka.classifiers.Classifier;\n" + 
+				"import weka.classifiers.Evaluation;\n" + 
+				"import weka.classifiers.functions.Logistic;\n" + 
+				"import weka.classifiers.trees.J48;\n" + 
+				"import weka.classifiers.trees.RandomForest;\n" + 
+				"import weka.core.Instances;\n" + 
+				"import weka.core.converters.CSVLoader;\n\n" +
+				"public class test {\n" + 
 				"\n" + 
 				"	public static void main(String[] args) throws Exception {\n";
 	}
