@@ -1,4 +1,4 @@
-package groupe1.compilateur.brillu.damant.guillet.renault;
+package groupe1_brillu_damand_guillet_renault.compilateur;
 
 import org.xtext.example.mydsl.mml.CrossValidation;
 import org.xtext.example.mydsl.mml.DT;

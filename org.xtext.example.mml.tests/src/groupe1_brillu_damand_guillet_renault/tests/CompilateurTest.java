@@ -1,4 +1,4 @@
-package groupe1.tests.brillu.damant.guillet.renault;
+package groupe1_brillu_damand_guillet_renault.tests;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -18,7 +18,7 @@ import org.xtext.example.mydsl.tests.MmlInjectorProvider;
 import com.google.common.io.Files;
 import com.google.inject.Inject;
 
-import groupe1.compilateur.brillu.damant.guillet.renault.Compilateur;
+import groupe1_brillu_damand_guillet_renault.compilateur.Compilateur;
 
 @ExtendWith(InjectionExtension.class)
 @InjectWith(MmlInjectorProvider.class)
