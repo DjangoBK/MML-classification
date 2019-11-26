@@ -19,6 +19,7 @@ import com.google.common.io.Files;
 import com.google.inject.Inject;
 
 import groupe1_brillu_damand_guillet_renault.compilateur.Compilateur;
+import groupe1_brillu_damand_guillet_renault.compilateur.CompilateurR;
 
 @ExtendWith(InjectionExtension.class)
 @InjectWith(MmlInjectorProvider.class)
@@ -82,6 +83,18 @@ public class CompilateurTest {
 		while ((line = in.readLine()) != null) {
 			System.out.println(line);
 	    }
+	}
+	
+	@Test
+	public void testR() throws Exception {
+		MMLModel result = parseHelper.parse("datainput \"C:/CSVFile/iris.csv\" separator ;\n"
+				+ "mlframework scikit-learn\n"
+				+ "algorithm DT\n"
+				+ "TrainingTest { percentageTraining 70 }\n"
+				+ "recall\n"
+				+ "");
+		CompilateurR c = new CompilateurR(result);
+		c.traitement(result);
 	}
 	
 //	private String mkValueInSingleQuote(String val) {
