@@ -1,0 +1,4 @@
+/.metadata/
+*._trace
+*.xtendbin
+*.class
