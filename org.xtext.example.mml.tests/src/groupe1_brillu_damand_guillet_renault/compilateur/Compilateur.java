@@ -86,8 +86,8 @@ public class Compilateur {
 				return compilateur.traitement(result);
 			}
 			else if(framworkLang == FrameworkLang.JAVA_WEKA) {
-				//CompilateurWeka compilateur = new CompilateurWeka(result);
-				//return compilateur.traitement(result);
+				CompilateurWeka compilateur = new CompilateurWeka(result, mlcalgo);
+				return compilateur.traitement();
 			}
 		}
 		return res;
