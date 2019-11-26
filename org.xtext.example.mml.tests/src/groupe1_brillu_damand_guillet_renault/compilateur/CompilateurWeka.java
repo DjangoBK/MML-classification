@@ -4,6 +4,7 @@ import org.xtext.example.mydsl.mml.CrossValidation;
 import org.xtext.example.mydsl.mml.DT;
 import org.xtext.example.mydsl.mml.DataInput;
 import org.xtext.example.mydsl.mml.LogisticRegression;
+import org.xtext.example.mydsl.mml.MLChoiceAlgorithm;
 import org.xtext.example.mydsl.mml.MMLModel;
 import org.xtext.example.mydsl.mml.RandomForest;
 import org.xtext.example.mydsl.mml.SVM;
@@ -14,24 +15,29 @@ import org.xtext.example.mydsl.mml.impl.SVMImpl;
 
 public class CompilateurWeka {
 MMLModel result;
+MLChoiceAlgorithm algo;
 	
-	public CompilateurWeka(MMLModel result) {
+	public CompilateurWeka(MMLModel result, MLChoiceAlgorithm mlAlgo) {
 		this.result = result;
+		this.algo = mlAlgo;
 	}
 	
-	public String traitement(MMLModel result) {
+	public String traitement() {
+		String res = ImportAndMain();
+		
 		DataInput dataInput = result.getInput();
 		String fileLocation = dataInput.getFilelocation();
 		double test_size = result.getValidation().getStratification().getNumber()/100.0;
 		
-		String res = "CSVLoader loader = new CSVLoader();\n"
-				+ "loader.setSource(new File(\""+fileLocation+"\"));\n";
-		String csvReading = "Instances data = loader.getDataSet();\n";
-		String split = "data.setClassIndex(data.numAttributes()-1);\n";
-		String size = "int trainSize = (int) Math.round(data.numInstances() * "+test_size+");\n" + 
-				"int testSize = data.numInstances() - trainSize;\n";
-		String TRAIN_TEST_SPLIT = "Instances train = new Instances(data, 0, trainSize);\n" + 
-				"			Instances test = new Instances(data, trainSize, testSize);";
+		res += "\t\tCSVLoader loader = new CSVLoader();\n"
+				+ "\t\tloader.setSource(new File(\""+fileLocation+"\"));\n";
+		String csvReading = "\t\tInstances data = loader.getDataSet();\n"
+				+ "\t\tdata.randomize(new Random());\n\n";
+		String split = "\t\tdata.setClassIndex(data.numAttributes()-1);\n";
+		String size = "\t\tint trainSize = (int) Math.round(data.numInstances() * "+test_size+");\n" + 
+				"\t\tint testSize = data.numInstances() - trainSize;\n";
+		String TRAIN_TEST_SPLIT = "\t\tInstances train = new Instances(data, 0, trainSize);\n" + 
+				"\t\tInstances test = new Instances(data, trainSize, testSize);\n";
 		res += csvReading + split + size + TRAIN_TEST_SPLIT  + "\n";
 		
 		if(result.getAlgorithms().get(0).getAlgorithm() instanceof DT) {
@@ -85,10 +91,8 @@ MMLModel result;
 	/** Algo DT **/
 	public String traitementDT() {		
 		System.out.println("traitement DT");
-		String algoSet = "Classifier cls = new J48();\n" + 
-				"			 cls.buildClassifier(train);\n";
-		algoSet += "Evaluation eval = new Evaluation(train);\n" + 
-				"eval.evaluateModel(cls, test);\n";
+		String algoSet = "\t\tClassifier cls = new J48();\n" + 
+				"\t\tcls.buildClassifier(train);\n";
 		
 		return algoSet;
 	}
@@ -97,33 +101,39 @@ MMLModel result;
 	public String traitementMetric() {
 		String res = "";
 		if(this.result.getValidation().getStratification() instanceof TrainingTest) {
-			res += "Evaluation eval = new Evaluation(train);\n" + 
-					"eval.evaluateModel(cls, test);\n";
+			res += "\t\tEvaluation eval = new Evaluation(train);\n" + 
+					"\t\teval.evaluateModel(cls, test);\n";
 			
 		}
 		else if(this.result.getValidation().getStratification() instanceof CrossValidation) {
-			
+			res += "\t\tEvaluation eval = new Evaluation(train);\n" + 
+					"\t\teval.crossValidateModel(cls, test, 2, new Random());\n";
 		}
 		else {
 			return null;
 		}
 		
 		if(this.result.getValidation().getMetric().get(0) == ValidationMetric.ACCURACY) {
-			return "double accuracy = eval.pctCorrect();\n" + 
-					"System.out.println(\"Accuracy = \" + accuracy)";			
+			res += "\t\tdouble accuracy = eval.pctCorrect();\n" + 
+					"\t\tSystem.out.println(\"Accuracy = \" + accuracy);\n";			
 		}
 		else if(this.result.getValidation().getMetric().get(0) == ValidationMetric.RECALL) {
-			return "System.out.println(eval.weightedRecall());";
+			res += "\t\tSystem.out.println(eval.weightedRecall());\n";
 		}
 		else if(this.result.getValidation().getMetric().get(0)==ValidationMetric.F1) {
-			return "precision = precision_score(y_true, y_pred, average='macro')\r\n"
-					+ "print(precision)";
+			res += "\t\tSystem.out.println(eval.weightedFMeasure());\n";
 		}
 		else if(this.result.getValidation().getMetric().get(0)==ValidationMetric.PRECISION) {
-			return "f1 = f1_score(y_true, y_pred, average='macro')\r\n"
-					+ "print(f1)";
+			res += "\t\tSystem.out.println(eval.weightedPrecision());\n";
 		}
 		else {return null;}
+		
+		return res + "\t}\n" + "}";
 	}
 
+	public String ImportAndMain() {
+		return "public class test {\n" + 
+				"\n" + 
+				"	public static void main(String[] args) throws Exception {\n";
+	}
 }
