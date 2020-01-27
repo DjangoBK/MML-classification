@@ -35,7 +35,7 @@ public class CompilateurR {
 		} else if (algo instanceof RandomForest) {
 			resultat += traitementRandomForest();
 		} else if (algo instanceof LogisticRegression) {
-			resultat += traitementLogisticRegression()+ traitementMetric();
+			resultat += traitementLogisticRegression();
 		}
 		return resultat;
 	}
