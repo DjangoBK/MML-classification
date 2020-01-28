@@ -26,6 +26,8 @@ public class CompilateurScikitLearnTest {
 	@Inject
 	ParseHelper<MMLModel> parseHelper;
 	
+	final String CSV_FOLDER = "\"C:/Users/pbril/Documents/R_workspace/iris.csv\"";
+	
 	@Test
 	public void loadModel() throws Exception {
 		MMLModel result = parseHelper.parse("datainput \"foo.csv\"\n"
@@ -43,7 +45,7 @@ public class CompilateurScikitLearnTest {
 	
 	@Test
 	public void compilerTest() throws Exception {
-		MMLModel result = parseHelper.parse("datainput \"C:/CSVFile/iris.csv\" separator ;\n"
+		MMLModel result = parseHelper.parse("datainput "+CSV_FOLDER+" separator ;\n"
 				+ "mlframework scikit-learn\n"
 				+ "algorithm DT\n"
 				+ "TrainingTest { percentageTraining 70 }\n"
@@ -64,8 +66,8 @@ public class CompilateurScikitLearnTest {
 //				"algorithm RandomForest TrainingTest{percentageTraining 20}"
 //				+ "accuracy");
 		
-		String pandasCode = Compilateur.loadData(result);
-		pandasCode += Compilateur.traitementAlgo(result);	
+		//String pandasCode = Compilateur.loadData(result);
+		String pandasCode = Compilateur.traitementAlgo(result);	
 		
 		Files.write(pandasCode.getBytes(), new File("mml.py"));
 		// end of Python generation
