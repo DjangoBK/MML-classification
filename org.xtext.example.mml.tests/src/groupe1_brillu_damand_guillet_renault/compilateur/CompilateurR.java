@@ -1,5 +1,6 @@
 package groupe1_brillu_damand_guillet_renault.compilateur;
 
+import org.xtext.example.mydsl.mml.CrossValidation;
 import org.xtext.example.mydsl.mml.DT;
 import org.xtext.example.mydsl.mml.DataInput;
 import org.xtext.example.mydsl.mml.LogisticRegression;
@@ -8,47 +9,61 @@ import org.xtext.example.mydsl.mml.MLChoiceAlgorithm;
 import org.xtext.example.mydsl.mml.MMLModel;
 import org.xtext.example.mydsl.mml.RandomForest;
 import org.xtext.example.mydsl.mml.SVM;
+import org.xtext.example.mydsl.mml.TrainingTest;
+import org.xtext.example.mydsl.mml.ValidationMetric;
 
 public class CompilateurR {
 	MMLModel result;
-	MLChoiceAlgorithm mlChoiceAlgorithm;
+	MLChoiceAlgorithm algorithm;
 
-	public CompilateurR(MMLModel result, MLChoiceAlgorithm mlChoiceAlgorithm) {
+	public CompilateurR(MMLModel result, MLChoiceAlgorithm algorithm) {
 		this.result = result;
-		this.mlChoiceAlgorithm = mlChoiceAlgorithm;
+		this.algorithm = algorithm;
 	}
 
-	public String traitement(MMLModel result) {
-		String resultat = "";
+	public String traitement() {
+		String res = "library(rpart,quietly = TRUE)\r\n" + //DT
+				"library(caret,quietly = TRUE)\r\n" +  //DT
+				"library(rpart.plot,quietly = TRUE)\r\n" + //DT
+				"library(rattle) \n"; //DT
 		DataInput dataInput = result.getInput();
 		String fileLocation = dataInput.getFilelocation();
 		String csvReading = "mml_data = read.table(" + mkValueInSingleQuote(fileLocation) + ", header=  T, sep=',')";
-		System.out.println(fileLocation);
-		resultat += csvReading + "\n";
-
-		MLAlgorithm algo = this.mlChoiceAlgorithm.getAlgorithm();
+		res+= csvReading + "\n";
 		
-		if (algo instanceof DT) {
-			resultat += traitementDT() + traitementMetric();
-		} else if (algo instanceof SVM) {
-			resultat += traitementSVM() + traitementMetric();
-		} else if (algo instanceof RandomForest) {
-			resultat += traitementRandomForest();
-		} else if (algo instanceof LogisticRegression) {
-			resultat += traitementLogisticRegression();
+		//traitementStratificationMethod();
+		if(this.algorithm.getAlgorithm() instanceof DT) {
+			res += traitementDT();
+			res+=traitementMetric();
 		}
-		return resultat;
+		else if (this.algorithm.getAlgorithm() instanceof SVM) {
+			res += traitementSVM();
+			res += traitementMetric();
+		}
+		else if (this.algorithm.getAlgorithm() instanceof RandomForest) {
+			res += traitementRandomForest();
+		}
+		else if (this.algorithm.getAlgorithm() instanceof LogisticRegression) {
+			res += traitementLogisticRegression();
+			res += traitementMetric();
+		}
+		//res =  traitementImport() + res;
+		return res;
 	}
 
 	private String traitementDT() {
-		System.out.println("traitement DT");
-		double test_size = (double) result.getValidation().getStratification().getNumber() / 100;
-		String size = "test_size = " + test_size + "\n";
-		System.out.println(size);
-		String TRAIN_TEST_SPLIT = "X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=" + test_size
-				+ ") \n";
-		System.out.println(TRAIN_TEST_SPLIT);
-		return "";
+		double test_size = result.getValidation().getStratification().getNumber()/100.0;
+		String size = "test_size = " + test_size +"\n";
+		String sample = "train <- sample(1:nrow(mml_data),size = ceiling(test_size*nrow(mml_data)),replace = FALSE) \n";
+		String train = "train_set = mml_data[train,] \n";
+		String test = "test_set = mml_data[-train,] \n";
+		String x_test = "x_test <- mml_data[,1:4] \n";
+		String y_test = "y_test <- mml_data[,5] \n";
+		
+		String algoSet = "tree <- rpart(variety~.,data=train_set,method = \"class\") \n";
+		algoSet += "pred <- predict(object=tree,x_test,type=\"class\") \n";
+		
+		return size + sample + train + test + x_test + y_test + algoSet;
 	}
 
 	private String traitementLogisticRegression() {
@@ -67,8 +82,41 @@ public class CompilateurR {
 	}
 
 	private String traitementMetric() {
-		// TODO Auto-generated method stub
-		return null;
+		if(this.result.getValidation().getStratification() instanceof TrainingTest) {
+			if(this.result.getValidation().getMetric().get(0) == ValidationMetric.ACCURACY) {
+				return "cm <- confusionMatrix(pred, y_test)\r\n" + 
+						"overall <- cm$overall\r\n" + 
+						"overall['Accuracy'] ";			
+			}
+			else if(this.result.getValidation().getMetric().get(0) == ValidationMetric.RECALL) {
+				return "";
+			}
+			else if(this.result.getValidation().getMetric().get(0)==ValidationMetric.F1) {
+				return "";
+			}
+			else if(this.result.getValidation().getMetric().get(0)==ValidationMetric.PRECISION) {
+				return "";
+			}
+			else {return null;}
+		}
+		else if(this.result.getValidation().getStratification() instanceof CrossValidation) {
+			if(this.result.getValidation().getMetric().get(0) == ValidationMetric.ACCURACY) {
+				return "";			
+			}
+			else if(this.result.getValidation().getMetric().get(0) == ValidationMetric.RECALL) {
+				return "";
+			}
+			else if(this.result.getValidation().getMetric().get(0)==ValidationMetric.F1) {
+				return "";
+			}
+			else if(this.result.getValidation().getMetric().get(0)==ValidationMetric.PRECISION) {
+				return "";
+			}
+			else {return null;}
+		}
+		else {
+			return null;
+		}		
 	}
 
 	private static String mkValueInSingleQuote(String val) {

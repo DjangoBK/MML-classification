@@ -83,7 +83,7 @@ public class Compilateur {
 			}
 			else if(framworkLang == FrameworkLang.R) {
 				CompilateurR compilateur = new CompilateurR(result, mlcalgo);
-				return compilateur.traitement(result);
+				return compilateur.traitement();
 			}
 			else if(framworkLang == FrameworkLang.JAVA_WEKA) {
 				CompilateurWeka compilateur = new CompilateurWeka(result, mlcalgo);
