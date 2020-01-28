@@ -77,12 +77,15 @@ public class CompilateurScikitLearnTest {
 		 * Calling generated Python script (basic solution through systems call)
 		 * we assume that "python" is in the path
 		 */
+		long startTime = System.nanoTime();
 		Process p = Runtime.getRuntime().exec("python mml.py");
 		BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
 		String line; 
 		while ((line = in.readLine()) != null) {
 			System.out.println(line);
 	    }
+		long elapsedTime = System.nanoTime() - startTime;
+		System.err.println("temps d'execution : " + elapsedTime/1000000000.0);
 	}
 	
 //	private String mkValueInSingleQuote(String val) {

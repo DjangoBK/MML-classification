@@ -48,17 +48,15 @@ public class CompilateurRTest {
 		Files.write(pandasCode.getBytes(), new File("mml.R"));
 		// end of Python generation
 		
-		
-		/*
-		 * Calling generated Python script (basic solution through systems call)
-		 * we assume that "python" is in the path
-		 */
+		long startTime = System.nanoTime();
 		Process p = Runtime.getRuntime().exec("Rscript mml.R");
 		BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
 		String line; 
 		while ((line = in.readLine()) != null) {
 			System.out.println(line);
 	    }
+		long elapsedTime = System.nanoTime() - startTime;
+		System.err.println("temps d'execution : " + elapsedTime/1000000000.0);
 		in.close();
 	}
 }
