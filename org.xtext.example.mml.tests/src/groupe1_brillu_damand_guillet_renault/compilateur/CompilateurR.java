@@ -25,7 +25,9 @@ public class CompilateurR {
 		String res = "library(rpart,quietly = TRUE)\r\n" + //DT
 				"library(caret,quietly = TRUE)\r\n" +  //DT
 				"library(rpart.plot,quietly = TRUE)\r\n" + //DT
-				"library(rattle) \n"; //DT
+				"library(rattle) \n" +//DT
+				"library(randomForest) \n" + //RF
+				"library(e1071) \n"; //all
 		DataInput dataInput = result.getInput();
 		String fileLocation = dataInput.getFilelocation();
 		String csvReading = "mml_data = read.table(" + mkValueInSingleQuote(fileLocation) + ", header=  T, sep=',')";
@@ -42,6 +44,7 @@ public class CompilateurR {
 		}
 		else if (this.algorithm.getAlgorithm() instanceof RandomForest) {
 			res += traitementRandomForest();
+			res += traitementMetric();
 		}
 		else if (this.algorithm.getAlgorithm() instanceof LogisticRegression) {
 			res += traitementLogisticRegression();
@@ -62,8 +65,9 @@ public class CompilateurR {
 		
 		String algoSet = "tree <- rpart(variety~.,data=train_set,method = \"class\") \n";
 		algoSet += "pred <- predict(object=tree,x_test,type=\"class\") \n";
+		String cm = "cm <- confusionMatrix(pred, y_test)\r\n";
 		
-		return size + sample + train + test + x_test + y_test + algoSet;
+		return size + sample + train + test + x_test + y_test + algoSet + cm;
 	}
 
 	private String traitementLogisticRegression() {
@@ -72,8 +76,18 @@ public class CompilateurR {
 	}
 
 	private String traitementRandomForest() {
-		// TODO Auto-generated method stub
-		return null;
+		double test_size = result.getValidation().getStratification().getNumber()/100.0;
+		String size = "test_size = " + test_size +"\n";
+		String sample = "ind <- sample(2,nrow(mml_data),replace=TRUE,prob=c(test_size,(1-test_size))) \n";
+		String train = "trainData <- mml_data[ind==1,] \n";
+		String test = "testData <- mml_data[ind==2,] \n";
+
+		String algoSet = "mml_data_rf <- randomForest(variety~.,data=trainData,ntree=100,proximity=TRUE) \n";
+		String predict = "pred <- predict(mml_data_rf) \n";
+		String cm = "cm <- confusionMatrix(predict(mml_data_rf),trainData$variety) \n";
+
+
+		return size + sample + train + test + algoSet + predict + cm;
 	}
 
 	private String traitementSVM() {
@@ -83,9 +97,8 @@ public class CompilateurR {
 
 	private String traitementMetric() {
 		if(this.result.getValidation().getStratification() instanceof TrainingTest) {
-			if(this.result.getValidation().getMetric().get(0) == ValidationMetric.ACCURACY) {
-				return "cm <- confusionMatrix(pred, y_test)\r\n" + 
-						"overall <- cm$overall\r\n" + 
+			if(this.result.getValidation().getMetric().get(0) == ValidationMetric.ACCURACY) { 
+				return	"overall <- cm$overall\r\n" + 
 						"overall['Accuracy'] ";			
 			}
 			else if(this.result.getValidation().getMetric().get(0) == ValidationMetric.RECALL) {
