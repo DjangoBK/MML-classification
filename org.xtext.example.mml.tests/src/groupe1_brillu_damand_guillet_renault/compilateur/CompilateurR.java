@@ -64,8 +64,8 @@ public class CompilateurR {
 		String sample = "train <- sample(1:nrow(mml_data),size = ceiling(test_size*nrow(mml_data)),replace = FALSE) \n";
 		String train = "train_set = mml_data[train,] \n";
 		String test = "test_set = mml_data[-train,] \n";
-		String x_test = "x_test <- mml_data[,1:4] \n";
-		String y_test = "y_test <- mml_data[,5] \n";
+		String x_test = "x_test <- mml_data[,1:(nbVar-1)] \n";
+		String y_test = "y_test <- mml_data[,nbVar] \n";
 		
 		String algoSet = "tree <- rpart(variety~.,data=train_set,method = \"class\") \n";
 		algoSet += "pred <- predict(object=tree,x_test,type=\"class\") \n";
