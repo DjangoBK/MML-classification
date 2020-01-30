@@ -67,7 +67,7 @@ public class CompilateurScikitLearn {
 	/** Algo SVM **/
 	public String traitementSVM() {
 		System.out.println("traitement SVM");
-		SVMImpl algo = (SVMImpl) this.algorithm;
+		SVMImpl algo = (SVMImpl) this.algorithm.getAlgorithm() ;
 		
 		double test_size = result.getValidation().getStratification().getNumber()/100.0;
 		String size = "test_size = " + test_size +"\n";
