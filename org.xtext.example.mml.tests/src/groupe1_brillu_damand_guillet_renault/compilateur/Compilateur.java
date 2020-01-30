@@ -1,22 +1,14 @@
 package groupe1_brillu_damand_guillet_renault.compilateur;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.xtext.testing.InjectWith;
 import org.eclipse.xtext.testing.extensions.InjectionExtension;
 import org.eclipse.xtext.testing.util.ParseHelper;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.xtext.example.mydsl.mml.CSVParsingConfiguration;
-import org.xtext.example.mydsl.mml.DataInput;
 import org.xtext.example.mydsl.mml.FrameworkLang;
 import org.xtext.example.mydsl.mml.MLChoiceAlgorithm;
 import org.xtext.example.mydsl.mml.MMLModel;
 import org.xtext.example.mydsl.tests.MmlInjectorProvider;
 
-import com.google.common.io.Files;
 import com.google.inject.Inject;
 
 @ExtendWith(InjectionExtension.class)
@@ -53,11 +45,23 @@ public class Compilateur {
 		}
 		return res;
 	}
-	
-	private static String mkValueInSingleQuote(String val) {
-		return "'" + val + "'";
-	}
-	
+
+	public static String getFramework(MMLModel result) {
+		EList<MLChoiceAlgorithm> algorithms = result.getAlgorithms();		
+		for(MLChoiceAlgorithm mlcalgo : algorithms) {
+			FrameworkLang framworkLang = mlcalgo.getFramework();
+			if(framworkLang == FrameworkLang.SCIKIT) {
+				return "SCIKIT";
+			}
+			else if(framworkLang == FrameworkLang.R) {
+				return "R";
+			}
+			else if(framworkLang == FrameworkLang.JAVA_WEKA) {
+				return "WEKA";
+			}
+		}
+		return "";
+	}	
 	
 
 }
