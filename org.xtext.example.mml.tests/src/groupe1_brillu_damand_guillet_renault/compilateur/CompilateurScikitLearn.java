@@ -180,18 +180,6 @@ public class CompilateurScikitLearn {
 		return size + split + TRAIN_TEST_SPLIT + algoSet;
 	}
 	
-	/** traitement de la stratification method : Cross Validation ou Training Test**/
-	//surement inutile
-	public String traitementStratificationMethod() {
-		if(this.result.getValidation().getStratification() instanceof CrossValidation) {
-			System.err.println("Cross Validation");
-		}
-		else if(this.result.getValidation().getStratification() instanceof TrainingTest) {
-			System.err.println("Training Test");
-		}
-		return null;
-	}
-	
 	/** traitement de la classification metric : accuracy, recall, f1 ou precision**/
 	public String traitementMetric() {
 		if(this.result.getValidation().getStratification() instanceof TrainingTest) {
