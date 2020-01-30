@@ -23,7 +23,8 @@ public class TestAll {
 	@Inject
 	ParseHelper<MMLModel> parseHelper;
 	
-	final String CSV_FOLDER = "\"C:/Users/pbril/Documents/R_workspace/iris.csv\"";
+	//final String CSV_FOLDER = "\"C:/Users/pbril/Documents/R_workspace/iris.csv\"";
+	final String CSV_FOLDER = "\"C:/Users/A730437/Documents/MIAGE/IDM/R_IDM/iris.csv\"";
 	
 	@Test
 	public void testWekaDT() throws Exception {
@@ -31,17 +32,27 @@ public class TestAll {
 				+ "mlframework Weka\n"
 				+ "algorithm DT\n"
 				+ "TrainingTest { percentageTraining 70 }\n"
-				+ "recall\n"
+				+ "accuracy\n"
 				+ "");
 		
 		String traitementAlgo = Compilateur.traitementAlgo(result);	
 		
-		Files.write(traitementAlgo.getBytes(), new File("main.java"));
+		Files.write(traitementAlgo.getBytes(), new File("Main.java"));
+		
 		long startTime = System.nanoTime();
-		Process p = Runtime.getRuntime().exec("java -cp weka-3.7.0.jar main.java");
+		
+		Process generateClass = Runtime.getRuntime().exec("javac -cp \".;./weka-3.7.0.jar\" main.java");
+		BufferedReader in = new BufferedReader(new InputStreamReader(generateClass.getInputStream()));
+		BufferedReader out = new BufferedReader(new InputStreamReader(generateClass.getErrorStream()));
+		String line1;
+		while ((line1 = in.readLine()) != null) {
+			System.out.println(line1);
+	    }
+		
+		Process p = Runtime.getRuntime().exec("java -cp \".;./weka-3.7.0.jar\" main");
 
-		BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
-		BufferedReader out = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+		in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+		out = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 		String line;
 		while ((line = in.readLine()) != null) {
 			System.out.println(line);
@@ -56,17 +67,26 @@ public class TestAll {
 				+ "mlframework Weka\n"
 				+ "algorithm RF\n"
 				+ "TrainingTest { percentageTraining 70 }\n"
-				+ "precision\n"
+				+ "accuracy\n"
 				+ "");
 		
 		String traitementAlgo = Compilateur.traitementAlgo(result);	
 		
-		Files.write(traitementAlgo.getBytes(), new File("main.java"));
+		Files.write(traitementAlgo.getBytes(), new File("Main.java"));
 		long startTime = System.nanoTime();
-		Process p = Runtime.getRuntime().exec("java -cp weka-3.7.0.jar main.java");
+		
+		Process generateClass = Runtime.getRuntime().exec("javac -cp \".;./weka-3.7.0.jar\" main.java");
+		BufferedReader in = new BufferedReader(new InputStreamReader(generateClass.getInputStream()));
+		BufferedReader out = new BufferedReader(new InputStreamReader(generateClass.getErrorStream()));
+		String line1;
+		while ((line1 = in.readLine()) != null) {
+			System.out.println(line1);
+	    }
+		
+		Process p = Runtime.getRuntime().exec("java -cp \".;./weka-3.7.0.jar\" main");
 
-		BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
-		BufferedReader out = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+		in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+		out = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 		String line;
 		while ((line = in.readLine()) != null) {
 			System.out.println(line);
@@ -81,17 +101,26 @@ public class TestAll {
 				+ "mlframework Weka\n"
 				+ "algorithm LogisticRegression\n"
 				+ "TrainingTest { percentageTraining 70 }\n"
-				+ "precision\n"
+				+ "accuracy\n"
 				+ "");
 		
 		String traitementAlgo = Compilateur.traitementAlgo(result);	
 		
-		Files.write(traitementAlgo.getBytes(), new File("main.java"));
+		Files.write(traitementAlgo.getBytes(), new File("Main.java"));
 		long startTime = System.nanoTime();
-		Process p = Runtime.getRuntime().exec("java -cp weka-3.7.0.jar main.java");
+		
+		Process generateClass = Runtime.getRuntime().exec("javac -cp \".;./weka-3.7.0.jar\" main.java");
+		BufferedReader in = new BufferedReader(new InputStreamReader(generateClass.getInputStream()));
+		BufferedReader out = new BufferedReader(new InputStreamReader(generateClass.getErrorStream()));
+		String line1;
+		while ((line1 = in.readLine()) != null) {
+			System.out.println(line1);
+	    }
+		
+		Process p = Runtime.getRuntime().exec("java -cp \".;./weka-3.7.0.jar\" main");
 
-		BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
-		BufferedReader out = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+		in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+		out = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 		String line;
 		while ((line = in.readLine()) != null) {
 			System.out.println(line);
@@ -196,7 +225,7 @@ public class TestAll {
 		MMLModel result =parseHelper.parse("datainput "+CSV_FOLDER+" \r\n" + 
 				"mlframework scikit-learn\r\n" + 
 				"algorithm SVM kernel=linear classification C-classification TrainingTest{percentageTraining 20}\r\n" + 
-				"recall");
+				"accuracy");
 		
 		String pandasCode = Compilateur.traitementAlgo(result);	
 		
