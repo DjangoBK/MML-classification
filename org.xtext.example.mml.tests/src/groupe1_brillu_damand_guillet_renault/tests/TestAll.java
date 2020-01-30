@@ -58,6 +58,8 @@ public class TestAll {
 			System.out.println(line);
 	    }
 		long elapsedTime = System.nanoTime() - startTime;
+		System.err.println(Compilateur.getFramework(result));
+		System.err.println(Compilateur.getAlgo(result));
 		System.err.println("temps d'execution : " + elapsedTime/1000000000.0);
 	}
 	
@@ -92,6 +94,8 @@ public class TestAll {
 			System.out.println(line);
 	    }
 		long elapsedTime = System.nanoTime() - startTime;
+		System.err.println(Compilateur.getFramework(result));
+		System.err.println(Compilateur.getAlgo(result));
 		System.err.println("temps d'execution : " + elapsedTime/1000000000.0);
 	}
 	
@@ -126,6 +130,8 @@ public class TestAll {
 			System.out.println(line);
 	    }
 		long elapsedTime = System.nanoTime() - startTime;
+		System.err.println(Compilateur.getFramework(result));
+		System.err.println(Compilateur.getAlgo(result));
 		System.err.println("temps d'execution : " + elapsedTime/1000000000.0);
 	}
 	
@@ -150,6 +156,8 @@ public class TestAll {
 			System.out.println(line);
 	    }
 		long elapsedTime = System.nanoTime() - startTime;
+		System.err.println(Compilateur.getFramework(result));
+		System.err.println(Compilateur.getAlgo(result));
 		System.err.println("temps d'execution : " + elapsedTime/1000000000.0);
 		in.close();
 	}
@@ -170,6 +178,8 @@ public class TestAll {
 			System.out.println(line);
 	    }
 		long elapsedTime = System.nanoTime() - startTime;
+		System.err.println(Compilateur.getFramework(result));
+		System.err.println(Compilateur.getAlgo(result));
 		System.err.println("temps d'execution : " + elapsedTime/1000000000.0);
 		in.close();
 	}
@@ -193,6 +203,8 @@ public class TestAll {
 			System.out.println(line);
 	    }
 		long elapsedTime = System.nanoTime() - startTime;
+		System.err.println(Compilateur.getFramework(result));
+		System.err.println(Compilateur.getAlgo(result));
 		System.err.println("temps d'execution : " + elapsedTime/1000000000.0);
 		in.close();
 	}
@@ -217,6 +229,8 @@ public class TestAll {
 			System.out.println(line);
 	    }
 		long elapsedTime = System.nanoTime() - startTime;
+		System.err.println(Compilateur.getFramework(result));
+		System.err.println(Compilateur.getAlgo(result));
 		System.err.println("temps d'execution : " + elapsedTime/1000000000.0);
 	}
 	
@@ -239,6 +253,8 @@ public class TestAll {
 			System.out.println(line);
 	    }
 		long elapsedTime = System.nanoTime() - startTime;
+		System.err.println(Compilateur.getFramework(result));
+		System.err.println(Compilateur.getAlgo(result));
 		System.err.println("temps d'execution : " + elapsedTime/1000000000.0);
 	}
 	
@@ -261,6 +277,8 @@ public class TestAll {
 			System.out.println(line);
 	    }
 		long elapsedTime = System.nanoTime() - startTime;
+		System.err.println(Compilateur.getFramework(result));
+		System.err.println(Compilateur.getAlgo(result));
 		System.err.println("temps d'execution : " + elapsedTime/1000000000.0);
 	}
 }
