@@ -4,9 +4,13 @@ import org.eclipse.xtext.testing.InjectWith;
 import org.eclipse.xtext.testing.extensions.InjectionExtension;
 import org.eclipse.xtext.testing.util.ParseHelper;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.xtext.example.mydsl.mml.DT;
 import org.xtext.example.mydsl.mml.FrameworkLang;
+import org.xtext.example.mydsl.mml.LogisticRegression;
 import org.xtext.example.mydsl.mml.MLChoiceAlgorithm;
 import org.xtext.example.mydsl.mml.MMLModel;
+import org.xtext.example.mydsl.mml.RandomForest;
+import org.xtext.example.mydsl.mml.SVM;
 import org.xtext.example.mydsl.tests.MmlInjectorProvider;
 
 import com.google.inject.Inject;
@@ -63,5 +67,23 @@ public class Compilateur {
 		return "";
 	}	
 	
+	public static String getAlgo(MMLModel result) {
+		EList<MLChoiceAlgorithm> algorithms = result.getAlgorithms();		
+		for(MLChoiceAlgorithm mlcalgo : algorithms) {
+			if(mlcalgo.getAlgorithm() instanceof DT) {
+				return "Decision Tree";
+			}
+			else if (mlcalgo.getAlgorithm() instanceof SVM) {
+				return "SVM";
+			}
+			else if (mlcalgo.getAlgorithm() instanceof RandomForest) {
+				return "Random Forest";
+			}
+			else if (mlcalgo.getAlgorithm() instanceof LogisticRegression) {
+				return "Logistic Regression";
+			}
+		}
+		return "";
+	}
 
 }
