@@ -156,7 +156,7 @@ MLChoiceAlgorithm algo;
 				"import weka.classifiers.trees.RandomForest;\n" + 
 				"import weka.core.Instances;\n" + 
 				"import weka.core.converters.CSVLoader;\n\n" +
-				"public class test {\n" + 
+				"public class main {\n" + 
 				"\n" + 
 				"	public static void main(String[] args) throws Exception {\n";
 	}
