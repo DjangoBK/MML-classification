@@ -18,6 +18,7 @@ public class CompilateurR {
 	
 	int nbVar = 5;
 	String predVar = "variety";
+	String algoName;
 
 	public CompilateurR(MMLModel result, MLChoiceAlgorithm algorithm) {
 		this.result = result;
@@ -40,18 +41,22 @@ public class CompilateurR {
 		if(this.algorithm.getAlgorithm() instanceof DT) {
 			res += traitementDT();
 			res+=traitementMetric();
+			setAlgoName("Decision Tree");
 		}
 		else if (this.algorithm.getAlgorithm() instanceof SVM) {
 			res += traitementSVM();
 			res += traitementMetric();
+			setAlgoName("SVM");
 		}
 		else if (this.algorithm.getAlgorithm() instanceof RandomForest) {
 			res += traitementRandomForest();
 			res += traitementMetric();
+			setAlgoName("Random Forest");
 		}
 		else if (this.algorithm.getAlgorithm() instanceof LogisticRegression) {
 			res += traitementLogisticRegression();
 			res += traitementMetric();
+			setAlgoName("Logistic Regression");
 		}
 		//res =  traitementImport() + res;
 		return res;
@@ -152,5 +157,15 @@ public class CompilateurR {
 	private static String mkValueInSingleQuote(String val) {
 		return "'" + val + "'";
 	}
+
+	public String getAlgoName() {
+		return algoName;
+	}
+
+	public void setAlgoName(String algoName) {
+		this.algoName = algoName;
+	}
+	
+	
 
 }
