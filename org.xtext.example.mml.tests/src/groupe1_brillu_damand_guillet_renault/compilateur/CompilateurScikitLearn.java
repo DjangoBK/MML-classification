@@ -24,7 +24,8 @@ public class CompilateurScikitLearn {
 	}
 	
 	public String traitement() {
-		String res = "from sklearn.model_selection import train_test_split\r\n"
+		String res = "import pandas as pd\n"
+				+ "from sklearn.model_selection import train_test_split\r\n"
 				+ "from sklearn import tree\r\n" //DT
 				+ "from sklearn.linear_model import LogisticRegression\n" //Logistic Regression
 				+ "from sklearn.ensemble import RandomForestClassifier\r\n" //RandomForest
