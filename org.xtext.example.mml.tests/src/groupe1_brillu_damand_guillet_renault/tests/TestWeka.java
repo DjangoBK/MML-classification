@@ -25,97 +25,121 @@ public class TestWeka {
 	@Inject
 	ParseHelper<MMLModel> parseHelper;
 	
+	//final String CSV_FOLDER = "\"C:/Users/pbril/Documents/R_workspace/iris.csv\"";
+	final String CSV_FOLDER = "\"C:/Users/A730437/Documents/MIAGE/IDM/R_IDM/iris.csv\"";
+	
 	@Test
-	public void testR() throws Exception {
-		MMLModel result = parseHelper.parse("datainput \"/media/hippolyte/Hippolyte/Cour/iris.csv\" separator ;\n"
+	public void testWekaDT() throws Exception {
+		MMLModel result = parseHelper.parse("datainput "+CSV_FOLDER+" separator ;\n"
 				+ "mlframework Weka\n"
 				+ "algorithm DT\n"
 				+ "TrainingTest { percentageTraining 70 }\n"
-				+ "recall\n"
+				+ "accuracy\n"
 				+ "");
 		
-		//Compilateur c = Compilateur.(result);
-		//c.traitement(result);
+		String traitementAlgo = Compilateur.traitementAlgo(result);	
 		
-		//String pandasCode = Compilateur.loadData(result);
-		String pandasCode = Compilateur.traitementAlgo(result);	
+		Files.write(traitementAlgo.getBytes(), new File("Main.java"));
 		
-		Files.write(pandasCode.getBytes(), new File("main.java"));
 		long startTime = System.nanoTime();
-		Process p = Runtime.getRuntime().exec("java -cp weka-3.7.0.jar main.java");
+		
+		Process generateClass = Runtime.getRuntime().exec("javac -cp \".;./weka-3.7.0.jar\" main.java");
+		BufferedReader in = new BufferedReader(new InputStreamReader(generateClass.getInputStream()));
+		BufferedReader out = new BufferedReader(new InputStreamReader(generateClass.getErrorStream()));
+		String line1;
+		while ((line1 = in.readLine()) != null) {
+			System.out.println(line1);
+	    }
+		
+		Process p = Runtime.getRuntime().exec("java -cp \".;./weka-3.7.0.jar\" main");
 
-		/* Start the process */
-		BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
-		BufferedReader out = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+		in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+		out = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 		String line;
+		Double metric = 0.0;
 		while ((line = in.readLine()) != null) {
 			System.out.println(line);
+			metric = Double.parseDouble(line.split("= ")[1]);
 	    }
 		long elapsedTime = System.nanoTime() - startTime;
+		System.err.println(metric);
 		System.err.println("temps d'execution : " + elapsedTime/1000000000.0);
-		// end of Python generation
 	}
 	
 	@Test
-	public void testWeka2() throws Exception {
-		MMLModel result = parseHelper.parse("datainput \"/media/hippolyte/Hippolyte/Cour/iris.csv\" separator ;\n"
+	public void testWekaRF() throws Exception {
+		MMLModel result = parseHelper.parse("datainput "+CSV_FOLDER+" separator ;\n"
 				+ "mlframework Weka\n"
 				+ "algorithm RF\n"
 				+ "TrainingTest { percentageTraining 70 }\n"
-				+ "precision\n"
+				+ "accuracy\n"
 				+ "");
 		
-		//Compilateur c = Compilateur.(result);
-		//c.traitement(result);
+		String traitementAlgo = Compilateur.traitementAlgo(result);	
 		
-		//String pandasCode = Compilateur.loadData(result);
-		String pandasCode = Compilateur.traitementAlgo(result);	
-		
-		Files.write(pandasCode.getBytes(), new File("main.java"));
+		Files.write(traitementAlgo.getBytes(), new File("Main.java"));
 		long startTime = System.nanoTime();
-		Process p = Runtime.getRuntime().exec("java -cp weka-3.7.0.jar main.java");
+		
+		Process generateClass = Runtime.getRuntime().exec("javac -cp \".;./weka-3.7.0.jar\" main.java");
+		BufferedReader in = new BufferedReader(new InputStreamReader(generateClass.getInputStream()));
+		BufferedReader out = new BufferedReader(new InputStreamReader(generateClass.getErrorStream()));
+		String line1;
+		while ((line1 = in.readLine()) != null) {
+			System.out.println(line1);
+	    }
+		
+		Process p = Runtime.getRuntime().exec("java -cp \".;./weka-3.7.0.jar\" main");
 
-		/* Start the process */
-		BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
-		BufferedReader out = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+		in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+		out = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 		String line;
+		Double metric = 0.0;
 		while ((line = in.readLine()) != null) {
 			System.out.println(line);
+			metric = Double.parseDouble(line.split("= ")[1]);
 	    }
 		long elapsedTime = System.nanoTime() - startTime;
+		System.err.println(metric);
 		System.err.println("temps d'execution : " + elapsedTime/1000000000.0);
-		// end of java generation
 	}
 	
 	@Test
-	public void testWeka3() throws Exception {
-		MMLModel result = parseHelper.parse("datainput \"/media/hippolyte/Hippolyte/Cour/iris.csv\" separator ;\n"
+	public void testWekaLogisticRegression() throws Exception {
+		MMLModel result = parseHelper.parse("datainput "+CSV_FOLDER+" separator ;\n"
 				+ "mlframework Weka\n"
 				+ "algorithm LogisticRegression\n"
 				+ "TrainingTest { percentageTraining 70 }\n"
-				+ "precision\n"
+				+ "accuracy\n"
 				+ "");
 		
-		//Compilateur c = Compilateur.(result);
-		//c.traitement(result);
+		String traitementAlgo = Compilateur.traitementAlgo(result);	
 		
-		//String pandasCode = Compilateur.loadData(result);
-		String pandasCode = Compilateur.traitementAlgo(result);	
-		
-		Files.write(pandasCode.getBytes(), new File("main.java"));
+		Files.write(traitementAlgo.getBytes(), new File("Main.java"));
 		long startTime = System.nanoTime();
-		Process p = Runtime.getRuntime().exec("java -cp weka-3.7.0.jar main.java");
+		
+		Process generateClass = Runtime.getRuntime().exec("javac -cp \".;./weka-3.7.0.jar\" main.java");
+		BufferedReader in = new BufferedReader(new InputStreamReader(generateClass.getInputStream()));
+		BufferedReader out = new BufferedReader(new InputStreamReader(generateClass.getErrorStream()));
+		String line1;
+		while ((line1 = in.readLine()) != null) {
+			//System.out.println(line1);
+	    }
+		
+		Process p = Runtime.getRuntime().exec("java -cp \".;./weka-3.7.0.jar\" main");
 
-		/* Start the process */
-		BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
-		BufferedReader out = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+		in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+		out = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 		String line;
+		Double metric = 0.0;
 		while ((line = in.readLine()) != null) {
-			System.out.println(line);
+			//System.out.println(line);
+			metric = Double.parseDouble(line.split("= ")[1]);
 	    }
 		long elapsedTime = System.nanoTime() - startTime;
+		System.err.println(Compilateur.getFramework(result));
+		System.err.println(Compilateur.getAlgo(result));
+		System.err.println(metric);
 		System.err.println("temps d'execution : " + elapsedTime/1000000000.0);
-		// end of Python generation
 	}
 	
 }

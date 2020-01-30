@@ -29,12 +29,10 @@ public class Compilateur {
 	public static String traitementAlgo(MMLModel result) {
 		EList<MLChoiceAlgorithm> algorithms = result.getAlgorithms();
 		String res = "";
-		System.err.println("traitement algo");
 		
 		for(MLChoiceAlgorithm mlcalgo : algorithms) {
 			FrameworkLang framworkLang = mlcalgo.getFramework();
 			if(framworkLang == FrameworkLang.SCIKIT) {
-				System.err.println("scikit-learn");
 				CompilateurScikitLearn compilateur = new CompilateurScikitLearn(result, mlcalgo);
 				res += compilateur.traitement();
 			}

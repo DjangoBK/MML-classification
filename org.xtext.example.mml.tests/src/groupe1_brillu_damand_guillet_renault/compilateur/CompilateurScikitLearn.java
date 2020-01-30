@@ -66,7 +66,6 @@ public class CompilateurScikitLearn {
 	
 	/** Algo SVM **/
 	public String traitementSVM() {
-		System.out.println("traitement SVM");
 		SVMImpl algo = (SVMImpl) this.algorithm.getAlgorithm() ;
 		
 		double test_size = result.getValidation().getStratification().getNumber()/100.0;
@@ -122,8 +121,7 @@ public class CompilateurScikitLearn {
 	}
 	
 	/** Algo DT **/
-	public String traitementDT() {		
-		System.out.println("traitement DT");
+	public String traitementDT() {
 		double test_size = result.getValidation().getStratification().getNumber()/100.0;
 		String size = "test_size = " + test_size +"\n";
 		
@@ -140,7 +138,6 @@ public class CompilateurScikitLearn {
 	
 	/** Algo Random Forest**/
 	public String traitementRandomForest() {
-		System.out.println("traitement Random Forest");
 		double test_size = result.getValidation().getStratification().getNumber()/100.0;
 		String size = "test_size = " + test_size +"\n";
 		
@@ -164,7 +161,6 @@ public class CompilateurScikitLearn {
 	
 	/** Algo Logistic Regression**/
 	public String traitementLogisticRegression() {
-		System.out.println("traitement Logistic Regression");
 		
 		double test_size = result.getValidation().getStratification().getNumber()/100.0;
 		String size = "test_size = " + test_size +"\n";

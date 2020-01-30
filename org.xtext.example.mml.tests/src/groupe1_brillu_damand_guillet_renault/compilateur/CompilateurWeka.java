@@ -63,7 +63,6 @@ MLChoiceAlgorithm algo;
 	
 	/** SVM **/
 	public String traitementSVM() {
-		System.out.println("traitement SVM");
 		SVMImpl algo = (SVMImpl) result.getAlgorithms().get(0).getAlgorithm();
 		
 		double test_size = result.getValidation().getStratification().getNumber()/100.0;
@@ -91,22 +90,19 @@ MLChoiceAlgorithm algo;
 	}
 	
 	/** Algo DT **/
-	public String traitementDT() {		
-		System.out.println("traitement DT");
+	public String traitementDT() {
 		return "\t\tClassifier cls = new J48();\n" + 
 				"\t\tcls.buildClassifier(train);\n";
 	}
 	
 	/** Algo Ramdom Forest **/
 	public String traitementRandomForest() {
-		System.out.println("traitement random forest");
 		return "\t\tClassifier cls = new RandomForest();\n" + 
 				"\t\tcls.buildClassifier(train);\n";
 	}
 	
 	/** Algo Logistic Regession **/
 	public String traitementLogisticRegression() {
-		System.out.println("traitement logistic regression");
 		return "\t\tClassifier cls = new Logistic();\n" + 
 				"\t\tcls.buildClassifier(train);\n";
 	}

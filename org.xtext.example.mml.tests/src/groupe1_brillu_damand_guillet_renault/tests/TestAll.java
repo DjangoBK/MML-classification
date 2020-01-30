@@ -46,7 +46,7 @@ public class TestAll {
 		BufferedReader out = new BufferedReader(new InputStreamReader(generateClass.getErrorStream()));
 		String line1;
 		while ((line1 = in.readLine()) != null) {
-			System.out.println(line1);
+			//System.out.println(line1);
 	    }
 		
 		Process p = Runtime.getRuntime().exec("java -cp \".;./weka-3.7.0.jar\" main");
@@ -55,7 +55,7 @@ public class TestAll {
 		out = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 		String line;
 		while ((line = in.readLine()) != null) {
-			System.out.println(line);
+			//System.out.println(line);
 	    }
 		long elapsedTime = System.nanoTime() - startTime;
 		System.err.println(Compilateur.getFramework(result));
@@ -82,7 +82,7 @@ public class TestAll {
 		BufferedReader out = new BufferedReader(new InputStreamReader(generateClass.getErrorStream()));
 		String line1;
 		while ((line1 = in.readLine()) != null) {
-			System.out.println(line1);
+			//System.out.println(line1);
 	    }
 		
 		Process p = Runtime.getRuntime().exec("java -cp \".;./weka-3.7.0.jar\" main");
@@ -91,7 +91,7 @@ public class TestAll {
 		out = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 		String line;
 		while ((line = in.readLine()) != null) {
-			System.out.println(line);
+			//System.out.println(line);
 	    }
 		long elapsedTime = System.nanoTime() - startTime;
 		System.err.println(Compilateur.getFramework(result));
@@ -118,7 +118,7 @@ public class TestAll {
 		BufferedReader out = new BufferedReader(new InputStreamReader(generateClass.getErrorStream()));
 		String line1;
 		while ((line1 = in.readLine()) != null) {
-			System.out.println(line1);
+			//System.out.println(line1);
 	    }
 		
 		Process p = Runtime.getRuntime().exec("java -cp \".;./weka-3.7.0.jar\" main");
@@ -127,7 +127,7 @@ public class TestAll {
 		out = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 		String line;
 		while ((line = in.readLine()) != null) {
-			System.out.println(line);
+			//System.out.println(line);
 	    }
 		long elapsedTime = System.nanoTime() - startTime;
 		System.err.println(Compilateur.getFramework(result));
@@ -153,7 +153,7 @@ public class TestAll {
 		BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
 		String line; 
 		while ((line = in.readLine()) != null) {
-			System.out.println(line);
+			//System.out.println(line);
 	    }
 		long elapsedTime = System.nanoTime() - startTime;
 		System.err.println(Compilateur.getFramework(result));
@@ -175,7 +175,7 @@ public class TestAll {
 		BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
 		String line; 
 		while ((line = in.readLine()) != null) {
-			System.out.println(line);
+			//System.out.println(line);
 	    }
 		long elapsedTime = System.nanoTime() - startTime;
 		System.err.println(Compilateur.getFramework(result));
@@ -200,7 +200,7 @@ public class TestAll {
 		BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
 		String line; 
 		while ((line = in.readLine()) != null) {
-			System.out.println(line);
+			//System.out.println(line);
 	    }
 		long elapsedTime = System.nanoTime() - startTime;
 		System.err.println(Compilateur.getFramework(result));
@@ -226,7 +226,7 @@ public class TestAll {
 		BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
 		String line; 
 		while ((line = in.readLine()) != null) {
-			System.out.println(line);
+			//System.out.println(line);
 	    }
 		long elapsedTime = System.nanoTime() - startTime;
 		System.err.println(Compilateur.getFramework(result));
@@ -250,7 +250,7 @@ public class TestAll {
 		BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
 		String line; 
 		while ((line = in.readLine()) != null) {
-			System.out.println(line);
+			//System.out.println(line);
 	    }
 		long elapsedTime = System.nanoTime() - startTime;
 		System.err.println(Compilateur.getFramework(result));
@@ -274,7 +274,7 @@ public class TestAll {
 		BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
 		String line; 
 		while ((line = in.readLine()) != null) {
-			System.out.println(line);
+			//System.out.println(line);
 	    }
 		long elapsedTime = System.nanoTime() - startTime;
 		System.err.println(Compilateur.getFramework(result));
