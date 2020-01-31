@@ -40,22 +40,22 @@ public class CompilateurR {
 		//traitementStratificationMethod();
 		if(this.algorithm.getAlgorithm() instanceof DT) {
 			res += traitementDT();
-			res+=traitementMetric();
+			res+=traitementMetrics();
 			setAlgoName("Decision Tree");
 		}
 		else if (this.algorithm.getAlgorithm() instanceof SVM) {
 			res += traitementSVM();
-			res += traitementMetric();
+			res += traitementMetrics();
 			setAlgoName("SVM");
 		}
 		else if (this.algorithm.getAlgorithm() instanceof RandomForest) {
 			res += traitementRandomForest();
-			res += traitementMetric();
+			res += traitementMetrics();
 			setAlgoName("Random Forest");
 		}
 		else if (this.algorithm.getAlgorithm() instanceof LogisticRegression) {
 			res += traitementLogisticRegression();
-			res += traitementMetric();
+			res += traitementMetrics();
 			setAlgoName("Logistic Regression");
 		}
 		//res =  traitementImport() + res;
@@ -116,32 +116,40 @@ public class CompilateurR {
 
 		return size+nbVar+sample+train+test+x_test+y_test+algoSet+predict+cm;
 	}
+	
+	private String traitementMetrics() {
+		String res = "";
+		for(int i = 0 ; i <this.result.getValidation().getMetric().size() ; i++) {
+			res += traitementMetric(i) + "\n";
+		}
+		return res;
+	}
 
-	private String traitementMetric() {
+	private String traitementMetric(int i) {
 		if(this.result.getValidation().getStratification() instanceof TrainingTest) {
-			if(this.result.getValidation().getMetric().get(0) == ValidationMetric.ACCURACY) { 
+			if(this.result.getValidation().getMetric().get(i) == ValidationMetric.ACCURACY) { 
 				return	"overall <- cm$overall\r\n" + 
 						"overall['Accuracy'] ";			
 			}
-			else if(this.result.getValidation().getMetric().get(0) == ValidationMetric.RECALL) {
+			else if(this.result.getValidation().getMetric().get(i) == ValidationMetric.RECALL) {
 				return "";
 			}
-			else if(this.result.getValidation().getMetric().get(0)==ValidationMetric.F1) {
+			else if(this.result.getValidation().getMetric().get(i)==ValidationMetric.F1) {
 				return "";
 			}
-			else if(this.result.getValidation().getMetric().get(0)==ValidationMetric.PRECISION) {
+			else if(this.result.getValidation().getMetric().get(i)==ValidationMetric.PRECISION) {
 				return "";
 			}
 			else {return null;}
 		}
 		else if(this.result.getValidation().getStratification() instanceof CrossValidation) {
-			if(this.result.getValidation().getMetric().get(0) == ValidationMetric.ACCURACY) {
+			if(this.result.getValidation().getMetric().get(i) == ValidationMetric.ACCURACY) {
 				return "";			
 			}
-			else if(this.result.getValidation().getMetric().get(0) == ValidationMetric.RECALL) {
+			else if(this.result.getValidation().getMetric().get(i) == ValidationMetric.RECALL) {
 				return "";
 			}
-			else if(this.result.getValidation().getMetric().get(0)==ValidationMetric.F1) {
+			else if(this.result.getValidation().getMetric().get(i)==ValidationMetric.F1) {
 				return "";
 			}
 			else if(this.result.getValidation().getMetric().get(0)==ValidationMetric.PRECISION) {

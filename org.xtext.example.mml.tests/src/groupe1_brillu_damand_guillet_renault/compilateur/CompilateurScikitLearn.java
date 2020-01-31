@@ -47,18 +47,19 @@ public class CompilateurScikitLearn {
 		//traitementStratificationMethod();
 		if(this.algorithm.getAlgorithm() instanceof DT) {
 			res += traitementDT();
-			res+=traitementMetric();
+			res+=traitementMetrics();
 		}
 		else if (this.algorithm.getAlgorithm() instanceof SVM) {
 			res += traitementSVM();
-			res += traitementMetric();
+			res += traitementMetrics();
 		}
 		else if (this.algorithm.getAlgorithm() instanceof RandomForest) {
 			res += traitementRandomForest();
+			res += traitementMetrics();
 		}
 		else if (this.algorithm.getAlgorithm() instanceof LogisticRegression) {
 			res += traitementLogisticRegression();
-			res += traitementMetric();
+			res += traitementMetrics();
 		}
 		//res =  traitementImport() + res;
 		return res;
@@ -176,43 +177,51 @@ public class CompilateurScikitLearn {
 		return size + split + TRAIN_TEST_SPLIT + algoSet;
 	}
 	
+	public String traitementMetrics() {
+		String res = "";
+		for(int i = 0 ; i <this.result.getValidation().getMetric().size() ; i++) {
+			res += traitementMetric(i) + "\n";
+		}
+		return res;
+	}
+	
 	/** traitement de la classification metric : accuracy, recall, f1 ou precision**/
-	public String traitementMetric() {
+	public String traitementMetric(int i) {
 		if(this.result.getValidation().getStratification() instanceof TrainingTest) {
-			if(this.result.getValidation().getMetric().get(0) == ValidationMetric.ACCURACY) {
+			if(this.result.getValidation().getMetric().get(i) == ValidationMetric.ACCURACY) {
 				return "accuracy = accuracy_score(y_test, clf.predict(X_test))\r\n" + 
 						"\r\n" + 
 						"print(accuracy)";			
 			}
-			else if(this.result.getValidation().getMetric().get(0) == ValidationMetric.RECALL) {
+			else if(this.result.getValidation().getMetric().get(i) == ValidationMetric.RECALL) {
 				return "recall = recall_score(y_test, clf.predict(X_test), average='macro')\n"
 						+ "print(recall)";
 			}
-			else if(this.result.getValidation().getMetric().get(0)==ValidationMetric.F1) {
+			else if(this.result.getValidation().getMetric().get(i)==ValidationMetric.F1) {
 				return "precision = precision_score(y_true, y_pred, average='macro')\r\n"
 						+ "print(precision)";
 			}
-			else if(this.result.getValidation().getMetric().get(0)==ValidationMetric.PRECISION) {
+			else if(this.result.getValidation().getMetric().get(i)==ValidationMetric.PRECISION) {
 				return "f1 = f1_score(y_true, y_pred, average='macro')\r\n"
 						+ "print(f1)";
 			}
 			else {return null;}
 		}
 		else if(this.result.getValidation().getStratification() instanceof CrossValidation) {
-			if(this.result.getValidation().getMetric().get(0) == ValidationMetric.ACCURACY) {
+			if(this.result.getValidation().getMetric().get(i) == ValidationMetric.ACCURACY) {
 				return "accuracy = cross_val_score(y_test, clf.predict(X_test))\r\n" + 
 						"\r\n" + 
 						"print(accuracy)";			
 			}
-			else if(this.result.getValidation().getMetric().get(0) == ValidationMetric.RECALL) {
+			else if(this.result.getValidation().getMetric().get(i) == ValidationMetric.RECALL) {
 				return "recall = recall_score(y_test, clf.predict(X_test), average='macro')\n"
 						+ "print(recall)";
 			}
-			else if(this.result.getValidation().getMetric().get(0)==ValidationMetric.F1) {
+			else if(this.result.getValidation().getMetric().get(i)==ValidationMetric.F1) {
 				return "precision = precision_score(y_true, y_pred, average='macro')\r\n"
 						+ "print(precision)";
 			}
-			else if(this.result.getValidation().getMetric().get(0)==ValidationMetric.PRECISION) {
+			else if(this.result.getValidation().getMetric().get(i)==ValidationMetric.PRECISION) {
 				return "f1 = f1_score(y_true, y_pred, average='macro')\r\n"
 						+ "print(f1)";
 			}
