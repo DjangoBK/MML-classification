@@ -9,9 +9,12 @@ import org.xtext.example.mydsl.mml.MMLModel;
 import org.xtext.example.mydsl.mml.RandomForest;
 import org.xtext.example.mydsl.mml.SVM;
 import org.xtext.example.mydsl.mml.SVMClassification;
+import org.xtext.example.mydsl.mml.SVMKernel;
 import org.xtext.example.mydsl.mml.TrainingTest;
 import org.xtext.example.mydsl.mml.ValidationMetric;
 import org.xtext.example.mydsl.mml.impl.SVMImpl;
+
+import libsvm.*;
 
 public class CompilateurWeka {
 MMLModel result;
@@ -65,28 +68,50 @@ MLChoiceAlgorithm algo;
 	public String traitementSVM() {
 		SVMImpl algo = (SVMImpl) result.getAlgorithms().get(0).getAlgorithm();
 		
-		double test_size = result.getValidation().getStratification().getNumber()/100.0;
-		String size = "double test_size = " + test_size +"\n";
-		
-		String TRAIN_TEST_SPLIT = "X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size="+ test_size +") \n";
-		String split = "X = mml_data.drop(columns=[\"variety\"])\n"
-				+ "Y = mml_data[\"variety\"]\n";
-		String algoSet = "";
-		
 		String Cclass = algo.getC();
 		String gamma = algo.getGamma();
 		String kernel = algo.getKernel().getName();
 		
+		String algoSet = "svm_parameter param = new svm_parameter()";
+		
+		//A supprimer
+		svm_parameter test = new svm_parameter();
+		test.svm_type = svm_parameter.ONE_CLASS;
+		test.kernel_type = svm_parameter.RBF;
+		
+		
 		if(algo.getSvmclassification() == SVMClassification.CCLASS) {
+			if(Cclass != null) {
+				algoSet += "param.svm_type = svm_parameter.C_SVC;";
+			}
 			
-		} else if(algo.getSvmclassification() == SVMClassification.CCLASS) {
+		} else if(algo.getSvmclassification() == SVMClassification.NU_CLASS) {
+			if(Cclass != null) {
+				algoSet += "param.svm_type = svm_parameter.NU_SVC;";
+			}
 			
-		} else if(algo.getSvmclassification() == SVMClassification.CCLASS) {
+		} else if(algo.getSvmclassification() == SVMClassification.ONE_CLASS) {
+			if(Cclass != null) {
+				algoSet += "param.svm_type = svm_parameter.ONE_CLASS;";
+			}
 			
-		} else if(algo.getSvmclassification() == SVMClassification.CCLASS) {
-			
+		} else {
+			return null;
 		}
-		return null;
+		
+		if(gamma != null) {
+			algoSet += "param.gamma = " + gamma + ";";
+		}
+		if(algo.isKernelSpecified()) {
+			if(algo.getKernel() == SVMKernel.LINEAR)
+				algoSet += "param.kernel_type = svm_parameter.LINEAR";
+			else if(algo.getKernel() == SVMKernel.POLY)
+				algoSet += "param.kernel_type = svm_parameter.POLY";
+			else if(algo.getKernel() == SVMKernel.RADIAL)
+				algoSet += "param.kernel_type = svm_parameter.RBF";
+		}
+		
+		return algoSet;
 	}
 	
 	/** Algo DT **/
@@ -150,7 +175,8 @@ MLChoiceAlgorithm algo;
 				"import weka.classifiers.functions.Logistic;\n" + 
 				"import weka.classifiers.trees.J48;\n" + 
 				"import weka.classifiers.trees.RandomForest;\n" + 
-				"import weka.core.Instances;\n" + 
+				"import weka.core.Instances;\n" +
+				"import libsvm.svm_node;\n" +
 				"import weka.core.converters.CSVLoader;\n\n" +
 				"public class main {\n" + 
 				"\n" + 
