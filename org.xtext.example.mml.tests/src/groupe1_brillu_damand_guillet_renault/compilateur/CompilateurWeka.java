@@ -14,8 +14,6 @@ import org.xtext.example.mydsl.mml.TrainingTest;
 import org.xtext.example.mydsl.mml.ValidationMetric;
 import org.xtext.example.mydsl.mml.impl.SVMImpl;
 
-import libsvm.*;
-
 public class CompilateurWeka {
 MMLModel result;
 MLChoiceAlgorithm algo;
@@ -73,11 +71,6 @@ MLChoiceAlgorithm algo;
 		String kernel = algo.getKernel().getName();
 		
 		String algoSet = "svm_parameter param = new svm_parameter()";
-		
-		//A supprimer
-		svm_parameter test = new svm_parameter();
-		test.svm_type = svm_parameter.ONE_CLASS;
-		test.kernel_type = svm_parameter.RBF;
 		
 		
 		if(algo.getSvmclassification() == SVMClassification.CCLASS) {
