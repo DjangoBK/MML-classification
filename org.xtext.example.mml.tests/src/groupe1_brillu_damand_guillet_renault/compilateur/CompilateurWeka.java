@@ -46,8 +46,8 @@ MLChoiceAlgorithm algo;
 			res+=traitementMetric();
 		}
 		else if (algo.getAlgorithm() instanceof SVM) {
-			res += traitementSVM();
-			res+=traitementMetric();
+			String supported = "SVM indisponible avec le framework weka";
+			res += "System.out.println("+supported+")";
 		}
 		else if (algo.getAlgorithm() instanceof RandomForest) {
 			res += traitementRandomForest();
@@ -60,51 +60,6 @@ MLChoiceAlgorithm algo;
 		//res =  traitementImport() + res;
 		return res;
 		
-	}
-	
-	/** SVM **/
-	public String traitementSVM() {
-		SVMImpl algo = (SVMImpl) result.getAlgorithms().get(0).getAlgorithm();
-		
-		String Cclass = algo.getC();
-		String gamma = algo.getGamma();
-		String kernel = algo.getKernel().getName();
-		
-		String algoSet = "svm_parameter param = new svm_parameter()";
-		
-		
-		if(algo.getSvmclassification() == SVMClassification.CCLASS) {
-			if(Cclass != null) {
-				algoSet += "param.svm_type = svm_parameter.C_SVC;";
-			}
-			
-		} else if(algo.getSvmclassification() == SVMClassification.NU_CLASS) {
-			if(Cclass != null) {
-				algoSet += "param.svm_type = svm_parameter.NU_SVC;";
-			}
-			
-		} else if(algo.getSvmclassification() == SVMClassification.ONE_CLASS) {
-			if(Cclass != null) {
-				algoSet += "param.svm_type = svm_parameter.ONE_CLASS;";
-			}
-			
-		} else {
-			return null;
-		}
-		
-		if(gamma != null) {
-			algoSet += "param.gamma = " + gamma + ";";
-		}
-		if(algo.isKernelSpecified()) {
-			if(algo.getKernel() == SVMKernel.LINEAR)
-				algoSet += "param.kernel_type = svm_parameter.LINEAR";
-			else if(algo.getKernel() == SVMKernel.POLY)
-				algoSet += "param.kernel_type = svm_parameter.POLY";
-			else if(algo.getKernel() == SVMKernel.RADIAL)
-				algoSet += "param.kernel_type = svm_parameter.RBF";
-		}
-		
-		return algoSet;
 	}
 	
 	/** Algo DT **/
