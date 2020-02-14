@@ -45,51 +45,111 @@ public class CompilateurScikitLearnTest {
 	
 	@Test
 	public void compilerTest() throws Exception {
-		MMLModel result = parseHelper.parse("datainput "+CSV_FOLDER+" separator ;\n"
+		MMLModel result = parseHelper.parse("datainput \"C:/CSVFile/iris.csv\" separator ;\n"
 				+ "mlframework scikit-learn\n"
 				+ "algorithm DT\n"
 				+ "TrainingTest { percentageTraining 70 }\n"
 				+ "accuracy\n"
 				+ "");
 		
-//		MMLModel result =parseHelper.parse("datainput \"C:/CSVFile/iris.csv\" \r\n" + 
-//				"mlframework scikit-learn\r\n" + 
-//				"algorithm SVM kernel=linear classification C-classification TrainingTest{percentageTraining 20}\r\n" + 
-//				"recall");
+		Double sommeAcc = 0.0;
+		Double sommeDur = 0.0;
+		int rep = 0;
 		
-//		MMLModel result = parseHelper.parse("datainput \"C:/CSVFile/iris.csv\" \r\n" + 
-//				"mlframework scikit-learn algorithm SVM classification one-classification TrainingTest {percentageTraining 20}\r\n" + 
-//				"accuracy");
-//		
-//		MMLModel result =parseHelper.parse("datainput \"C:/CSVFile/iris.csv\"\r\n" + 
-//				"mlframework scikit-learn\r\n" + 
-//				"algorithm RandomForest TrainingTest{percentageTraining 20}"
-//				+ "accuracy");
-		
-		//String pandasCode = Compilateur.loadData(result);
-		String pandasCode = Compilateur.traitementAlgo(result);	
-		
-		Files.write(pandasCode.getBytes(), new File("mml.py"));
-		// end of Python generation
-		
-		
-		/*
-		 * Calling generated Python script (basic solution through systems call)
-		 * we assume that "python" is in the path
-		 */
-		long startTime = System.nanoTime();
-		Process p = Runtime.getRuntime().exec("python mml.py");
-		BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
-		String line; 
-		while ((line = in.readLine()) != null) {
-			System.out.println(line);
-	    }
-		long elapsedTime = System.nanoTime() - startTime;
-		System.err.println("temps d'execution : " + elapsedTime/1000000000.0);
+		while(rep<20) {
+			System.out.println(rep);
+			String pandasCode = Compilateur.traitementAlgo(result);	
+			
+			Files.write(pandasCode.getBytes(), new File("mml_DT_acc.py"));
+			
+			long startTime = System.nanoTime();
+			Process p = Runtime.getRuntime().exec("python mml_DT_acc.py");
+			BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			String line; 
+			String last_line ="";
+			while ((line = in.readLine()) != null) {
+				System.out.println(line);
+				 last_line = line;
+		    }
+			long elapsedTime = System.nanoTime() - startTime;
+			System.err.println("temps d'execution : " + elapsedTime/1000000000.0);
+			Double acc = Double.parseDouble(last_line);
+			sommeAcc += acc;
+			sommeDur += elapsedTime/1000000000.0;
+			rep++;
+		}
+		System.err.println("moyenne acc = " + sommeAcc/rep);
+		System.err.println("moyenne temps = " + sommeDur/rep);
 	}
 	
-//	private String mkValueInSingleQuote(String val) {
-//		return "'" + val + "'";
-//	}
-
+	@Test
+	public void compilerTest2() throws Exception {
+		MMLModel result =parseHelper.parse("datainput \"C:/CSVFile/iris.csv\"\r\n" + 
+				"mlframework scikit-learn\r\n" + 
+				"algorithm RandomForest TrainingTest{percentageTraining 20}"
+				+ "accuracy");
+		Double sommeAcc = 0.0;
+		Double sommeDur = 0.0;
+		int rep = 0;
+		
+		while(rep<20) {
+			String pandasCode = Compilateur.traitementAlgo(result);	
+			
+			Files.write(pandasCode.getBytes(), new File("mml_RF_acc.py"));
+			
+			long startTime = System.nanoTime();
+			Process p = Runtime.getRuntime().exec("python mml_RF_acc.py");
+			BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			String line; 
+			String last_line ="";
+			while ((line = in.readLine()) != null) {
+				System.out.println(line);
+				last_line = line;
+		    }
+			long elapsedTime = System.nanoTime() - startTime;
+			System.err.println("temps d'execution : " + elapsedTime/1000000000.0);
+			Double acc = Double.parseDouble(last_line);
+			sommeAcc += acc;
+			sommeDur += elapsedTime/1000000000.0;
+			rep++;
+		}
+		System.err.println("moyenne acc = " + sommeAcc/rep);
+		System.err.println("moyenne temps = " + sommeDur/rep);
+	}
+	
+	@Test
+	public void compilerTest3() throws Exception {		
+		MMLModel result =parseHelper.parse("datainput \"C:/CSVFile/iris.csv\" \r\n" + 
+				"mlframework scikit-learn\r\n" + 
+				"algorithm SVM kernel=linear classification C-classification TrainingTest{percentageTraining 20}\r\n" + 
+				"accuracy");
+		
+		Double sommeAcc = 0.0;
+		Double sommeDur = 0.0;
+		int rep = 0;
+		
+		while(rep<20) {
+			String pandasCode = Compilateur.traitementAlgo(result);	
+			
+			Files.write(pandasCode.getBytes(), new File("mml_SVM_acc.py"));
+			long startTime = System.nanoTime();
+			Process p = Runtime.getRuntime().exec("python mml_SVM_acc.py");
+			BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			String line; 
+			String last_line="";
+			while ((line = in.readLine()) != null) {
+				System.out.println(line);
+				last_line=line;
+		    }
+			long elapsedTime = System.nanoTime() - startTime;
+			System.err.println("temps d'execution : " + elapsedTime/1000000000.0);
+			Double acc = Double.parseDouble(last_line);
+			sommeAcc += acc;
+			sommeDur += elapsedTime/1000000000.0;
+			rep++;
+		}
+		System.err.println("moyenne acc = " + sommeAcc/rep);
+		System.err.println("moyenne temps = " + sommeDur/rep);
+		
+	}
 }
