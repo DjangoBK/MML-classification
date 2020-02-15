@@ -198,11 +198,11 @@ public class CompilateurScikitLearn {
 						+ "print(recall)";
 			}
 			else if(this.result.getValidation().getMetric().get(i)==ValidationMetric.F1) {
-				return "precision = precision_score(y_true, y_pred, average='macro')\r\n"
+				return "precision = precision_score(y_test, clf.predict(X_test), average='macro')\r\n"
 						+ "print(precision)";
 			}
 			else if(this.result.getValidation().getMetric().get(i)==ValidationMetric.PRECISION) {
-				return "f1 = f1_score(y_true, y_pred, average='macro')\r\n"
+				return "f1 = f1_score(y_test, clf.predict(X_test), average='macro')\r\n"
 						+ "print(f1)";
 			}
 			else {return null;}
@@ -218,11 +218,11 @@ public class CompilateurScikitLearn {
 						+ "print(recall)";
 			}
 			else if(this.result.getValidation().getMetric().get(i)==ValidationMetric.F1) {
-				return "precision = precision_score(y_true, y_pred, average='macro')\r\n"
+				return "precision = precision_score(y_test, clf.predict(X_test), average='macro')\r\n"
 						+ "print(precision)";
 			}
 			else if(this.result.getValidation().getMetric().get(i)==ValidationMetric.PRECISION) {
-				return "f1 = f1_score(y_true, y_pred, average='macro')\r\n"
+				return "f1 = f1_score(y_test, clf.predict(X_test), average='macro')\r\n"
 						+ "print(f1)";
 			}
 			else {return null;}
