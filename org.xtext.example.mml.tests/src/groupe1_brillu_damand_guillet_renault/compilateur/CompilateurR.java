@@ -65,7 +65,8 @@ public class CompilateurR {
 	private String traitementDT() {
 		double test_size = result.getValidation().getStratification().getNumber()/100.0;
 		String size = "test_size = " + test_size +"\n";
-		String nbVar = "nbVar = " + this.nbVar + "\n";
+//		String nbVar = "nbVar = " + this.nbVar + "\n";
+		String nbVar = "dim(mml_data)[2]";
 		String sample = "train <- sample(1:nrow(mml_data),size = ceiling(test_size*nrow(mml_data)),replace = FALSE) \n";
 		String train = "train_set = mml_data[train,] \n";
 		String test = "test_set = mml_data[-train,] \n";
@@ -87,7 +88,8 @@ public class CompilateurR {
 	private String traitementRandomForest() {
 		double test_size = result.getValidation().getStratification().getNumber()/100.0;
 		String size = "test_size = " + test_size +"\n";
-		String nbVar = "nbVar = " + this.nbVar + "\n";
+//		String nbVar = "nbVar = " + this.nbVar + "\n";
+		String nbVar = "dim(mml_data)[2]";
 		String sample = "ind <- sample(2,nrow(mml_data),replace=TRUE,prob=c(test_size,(1-test_size))) \n";
 		String train = "trainData <- mml_data[ind==1,] \n";
 		String test = "testData <- mml_data[ind==2,] \n";
@@ -103,7 +105,8 @@ public class CompilateurR {
 	private String traitementSVM() {
 		double test_size = result.getValidation().getStratification().getNumber()/100.0;
 		String size = "test_size = " + test_size +"\n";
-		String nbVar = "nbVar = " + this.nbVar + "\n";
+//		String nbVar = "nbVar = " + this.nbVar + "\n";
+		String nbVar = "dim(mml_data)[2]";
 		String sample = "train <- sample(1:nrow(mml_data),size = ceiling(test_size*nrow(mml_data)),replace = FALSE) \n";
 		String train = "train_set = mml_data[train,] \n";
 		String test = "test_set = mml_data[-train,] \n";
@@ -132,13 +135,19 @@ public class CompilateurR {
 						"overall['Accuracy'] ";			
 			}
 			else if(this.result.getValidation().getMetric().get(i) == ValidationMetric.RECALL) {
-				return "";
+				return "class <- cm$byClass\r\n"
+						+ "n <- dim(class)[1]"
+						+ "recallCm(cm, n)";
 			}
 			else if(this.result.getValidation().getMetric().get(i)==ValidationMetric.F1) {
-				return "";
+				return "class <- cm$byClass\r\n"
+						+ "n <- dim(class)[1]"
+						+ "F1Cm(cm, n)";
 			}
 			else if(this.result.getValidation().getMetric().get(i)==ValidationMetric.PRECISION) {
-				return "";
+				return "class <- cm$byClass\r\n"
+						+ "n <- dim(class)[1]"
+						+ "precisionCm(cm, n)";
 			}
 			else {return null;}
 		}
