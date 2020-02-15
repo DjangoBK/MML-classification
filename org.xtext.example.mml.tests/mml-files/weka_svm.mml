@@ -1,0 +1,5 @@
+datainput "C:/CSVFile/iris.csv" 
+mlframework Weka 
+algorithm SVM 
+TrainingTest {percentageTraining 70}
+accuracy
