@@ -1,6 +1,7 @@
 package groupe1_brillu_damand_guillet_renault.compilateur;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStreamReader;
 
 import org.eclipse.emf.common.util.EList;
@@ -31,7 +32,7 @@ public class Compilateur {
 	String algo;
 	String framework;
 		
-	public static String traitementAlgo(MMLModel result) {
+	public static void traitementAlgo(MMLModel result) throws IOException {
 		EList<MLChoiceAlgorithm> algorithms = result.getAlgorithms();
 		String res = "";
 		
@@ -39,54 +40,97 @@ public class Compilateur {
 			FrameworkLang framworkLang = mlcalgo.getFramework();
 			if(framworkLang == FrameworkLang.SCIKIT) {
 				CompilateurScikitLearn compilateur = new CompilateurScikitLearn(result, mlcalgo);
-				res += compilateur.traitement();
+				execScikit(compilateur.traitement());
 			}
 			else if(framworkLang == FrameworkLang.R) {
 				CompilateurR compilateur = new CompilateurR(result, mlcalgo);
-				return compilateur.traitement();
+				execR(compilateur.traitement());
 			}
 			else if(framworkLang == FrameworkLang.JAVA_WEKA) {
 				CompilateurWeka compilateur = new CompilateurWeka(result, mlcalgo);
-				return compilateur.traitement();
+				execWeka(compilateur.traitement(), result);
 			}
 		}
-		return res;
 	}
 	
-	public static String getFramework(MMLModel result) {
-		EList<MLChoiceAlgorithm> algorithms = result.getAlgorithms();		
-		for(MLChoiceAlgorithm mlcalgo : algorithms) {
-			FrameworkLang framworkLang = mlcalgo.getFramework();
-			if(framworkLang == FrameworkLang.SCIKIT) {
-				return "SCIKIT";
-			}
-			else if(framworkLang == FrameworkLang.R) {
-				return "R";
-			}
-			else if(framworkLang == FrameworkLang.JAVA_WEKA) {
-				return "WEKA";
-			}
-		}
-		return "";
-	}	
+	public static void execWeka(String traitementAlgo, MMLModel result) throws IOException {
+		Files.write(traitementAlgo.getBytes(), new File("Main.java"));
+		long startTime = System.nanoTime();
+		
+		Process generateClass = Runtime.getRuntime().exec("javac -cp \".;./weka-3.7.0.jar\" main.java");
+		BufferedReader in = new BufferedReader(new InputStreamReader(generateClass.getInputStream()));
+		BufferedReader out = new BufferedReader(new InputStreamReader(generateClass.getErrorStream()));
+		String line1;
+		while ((line1 = in.readLine()) != null) {
+			//System.out.println(line1);
+	    }
+		
+		Process p = Runtime.getRuntime().exec("java -cp \".;./weka-3.7.0.jar\" main");
+
+		in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+		out = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+		String line;
+		Double metric = 0.0;
+		while ((line = in.readLine()) != null) {
+			//System.out.println(line);
+			metric = Double.parseDouble(line.split("= ")[1]);
+	    }
+		long elapsedTime = System.nanoTime() - startTime;
+		//System.err.println(Compilateur.getFramework(result));
+		//System.err.println(Compilateur.getAlgo(result));
+		System.err.println(metric);
+		System.err.println("temps d'execution : " + elapsedTime/1000000000.0);
+	}
 	
-	public static String getAlgo(MMLModel result) {
-		EList<MLChoiceAlgorithm> algorithms = result.getAlgorithms();		
-		for(MLChoiceAlgorithm mlcalgo : algorithms) {
-			if(mlcalgo.getAlgorithm() instanceof DT) {
-				return "Decision Tree";
-			}
-			else if (mlcalgo.getAlgorithm() instanceof SVM) {
-				return "SVM";
-			}
-			else if (mlcalgo.getAlgorithm() instanceof RandomForest) {
-				return "Random Forest";
-			}
-			else if (mlcalgo.getAlgorithm() instanceof LogisticRegression) {
-				return "Logistic Regression";
-			}
+	public static void execScikit(String pandasCode) throws IOException {
+		Double sommeAcc = 0.0;
+		Double sommeDur = 0.0;
+		int rep = 0;
+		
+		while(rep<20) {
+			System.out.println(rep);
+			
+			Files.write(pandasCode.getBytes(), new File("mml_DT_acc.py"));
+			
+			long startTime = System.nanoTime();
+			Process p = Runtime.getRuntime().exec("python mml_DT_acc.py");
+			BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			String line; 
+			String last_line ="";
+			while ((line = in.readLine()) != null) {
+				System.out.println(line);
+				 last_line = line;
+		    }
+			long elapsedTime = System.nanoTime() - startTime;
+			System.err.println("temps d'execution : " + elapsedTime/1000000000.0);
+			Double acc = Double.parseDouble(last_line);
+			sommeAcc += acc;
+			sommeDur += elapsedTime/1000000000.0;
+			rep++;
 		}
-		return "";
+		System.err.println("moyenne acc = " + sommeAcc/rep);
+		System.err.println("moyenne temps = " + sommeDur/rep);
+	}
+	
+	public static void execR(String pandasCode) throws IOException {
+		Files.write(pandasCode.getBytes(), new File("mml.R"));
+		// end of Python generation
+		
+		long startTime = System.nanoTime();
+		Process p = Runtime.getRuntime().exec("Rscript mml.R");
+		BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+		String line;
+		String last="";
+		int c = 0;
+		while ((line = in.readLine()) != null) {
+			//System.out.println(line);
+			last = line;
+	    }
+		long elapsedTime = System.nanoTime() - startTime;
+		double metric = Double.parseDouble(last);
+		System.err.println(" ; " + metric);
+		System.err.println("temps d'execution : " + elapsedTime/1000000000.0);
+		in.close();
 	}
 
 }

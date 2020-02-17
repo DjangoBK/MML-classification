@@ -316,9 +316,9 @@ public class TestAll {
 			}
 			MMLModel result = parseHelper.parse(mml);
 			
-			String traitementAlgo = Compilateur.traitementAlgo(result);	
+			Compilateur.traitementAlgo(result);	
 			
-			Files.write(traitementAlgo.getBytes(), new File("Main.java"));
+			/*Files.write(traitementAlgo.getBytes(), new File("Main.java"));
 			long startTime = System.nanoTime();
 			
 			Process generateClass = Runtime.getRuntime().exec("javac -cp \".;./weka-3.7.0.jar\" main.java");
@@ -340,7 +340,7 @@ public class TestAll {
 			long elapsedTime = System.nanoTime() - startTime;
 			System.err.println(Compilateur.getFramework(result));
 			System.err.println(Compilateur.getAlgo(result));
-			System.err.println("temps d'execution : " + elapsedTime/1000000000.0);
+			System.err.println("temps d'execution : " + elapsedTime/1000000000.0);*/
 		}
 	}
 }
