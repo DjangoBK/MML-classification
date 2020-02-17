@@ -124,7 +124,6 @@ MLChoiceAlgorithm algo;
 				"import weka.classifiers.trees.J48;\n" + 
 				"import weka.classifiers.trees.RandomForest;\n" + 
 				"import weka.core.Instances;\n" +
-				"import libsvm.svm_node;\n" +
 				"import weka.core.converters.CSVLoader;\n\n" +
 				"public class main {\n" + 
 				"\n" + 
