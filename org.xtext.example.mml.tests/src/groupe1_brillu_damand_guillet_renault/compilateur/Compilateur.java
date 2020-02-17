@@ -1,4 +1,8 @@
 package groupe1_brillu_damand_guillet_renault.compilateur;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStreamReader;
+
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.xtext.testing.InjectWith;
 import org.eclipse.xtext.testing.extensions.InjectionExtension;
@@ -13,6 +17,7 @@ import org.xtext.example.mydsl.mml.RandomForest;
 import org.xtext.example.mydsl.mml.SVM;
 import org.xtext.example.mydsl.tests.MmlInjectorProvider;
 
+import com.google.common.io.Files;
 import com.google.inject.Inject;
 
 @ExtendWith(InjectionExtension.class)
@@ -25,7 +30,7 @@ public class Compilateur {
 	
 	String algo;
 	String framework;
-	
+		
 	public static String traitementAlgo(MMLModel result) {
 		EList<MLChoiceAlgorithm> algorithms = result.getAlgorithms();
 		String res = "";
@@ -47,7 +52,7 @@ public class Compilateur {
 		}
 		return res;
 	}
-
+	
 	public static String getFramework(MMLModel result) {
 		EList<MLChoiceAlgorithm> algorithms = result.getAlgorithms();		
 		for(MLChoiceAlgorithm mlcalgo : algorithms) {

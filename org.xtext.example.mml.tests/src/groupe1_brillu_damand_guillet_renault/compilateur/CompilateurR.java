@@ -36,6 +36,7 @@ public class CompilateurR {
 		String fileLocation = dataInput.getFilelocation();
 		String csvReading = "mml_data = read.table(" + mkValueInSingleQuote(fileLocation) + ", header=  T, sep=',')";
 		res+= csvReading + "\n";
+		setPredVar();
 		
 		//traitementStratificationMethod();
 		if(this.algorithm.getAlgorithm() instanceof DT) {
@@ -65,7 +66,6 @@ public class CompilateurR {
 	private String traitementDT() {
 		double test_size = result.getValidation().getStratification().getNumber()/100.0;
 		String size = "test_size = " + test_size +"\n";
-//		String nbVar = "nbVar = " + this.nbVar + "\n";
 		String nbVar = "dim(mml_data)[2]";
 		String sample = "train <- sample(1:nrow(mml_data),size = ceiling(test_size*nrow(mml_data)),replace = FALSE) \n";
 		String train = "train_set = mml_data[train,] \n";
@@ -88,7 +88,6 @@ public class CompilateurR {
 	private String traitementRandomForest() {
 		double test_size = result.getValidation().getStratification().getNumber()/100.0;
 		String size = "test_size = " + test_size +"\n";
-//		String nbVar = "nbVar = " + this.nbVar + "\n";
 		String nbVar = "dim(mml_data)[2]";
 		String sample = "ind <- sample(2,nrow(mml_data),replace=TRUE,prob=c(test_size,(1-test_size))) \n";
 		String train = "trainData <- mml_data[ind==1,] \n";
@@ -105,7 +104,6 @@ public class CompilateurR {
 	private String traitementSVM() {
 		double test_size = result.getValidation().getStratification().getNumber()/100.0;
 		String size = "test_size = " + test_size +"\n";
-//		String nbVar = "nbVar = " + this.nbVar + "\n";
 		String nbVar = "dim(mml_data)[2]";
 		String sample = "train <- sample(1:nrow(mml_data),size = ceiling(test_size*nrow(mml_data)),replace = FALSE) \n";
 		String train = "train_set = mml_data[train,] \n";
@@ -181,6 +179,19 @@ public class CompilateurR {
 
 	public void setAlgoName(String algoName) {
 		this.algoName = algoName;
+	}
+	
+	public void setPredVar() {
+		System.err.println("Formula : " + result.getFormula().getPredictive());
+		/*if(result.getFormula() != null) {
+			if(result.getFormula().getPredictive().getColName() != null) {
+				this.predVar = result.getFormula().getPredictive().getColName();
+			}
+		}
+		else {
+			this.predVar = "???";
+		}
+		System.out.println(predVar);*/
 	}
 	
 	

@@ -81,7 +81,7 @@ public class CompilateurScikitLearnTest {
 		System.err.println("moyenne acc = " + sommeAcc/rep);
 		System.err.println("moyenne temps = " + sommeDur/rep);
 	}
-	
+	/*
 	@Test
 	public void compilerTest2() throws Exception {
 		MMLModel result =parseHelper.parse("datainput \"C:/CSVFile/iris.csv\"\r\n" + 
@@ -116,13 +116,20 @@ public class CompilateurScikitLearnTest {
 		System.err.println("moyenne acc = " + sommeAcc/rep);
 		System.err.println("moyenne temps = " + sommeDur/rep);
 	}
-	
+	*/
 	@Test
 	public void compilerTest3() throws Exception {		
-		MMLModel result =parseHelper.parse("datainput \"C:/CSVFile/iris.csv\" \r\n" + 
-				"mlframework scikit-learn\r\n" + 
-				"algorithm SVM kernel=linear classification C-classification TrainingTest{percentageTraining 20}\r\n" + 
-				"accuracy");
+//		MMLModel result =parseHelper.parse("datainput \"C:/CSVFile/iris.csv\" \r\n" + 
+//				"mlframework scikit-learn\r\n" + 
+//				"algorithm SVM kernel=linear classification C-classification TrainingTest{percentageTraining 20}\r\n" + 
+//				"accuracy");
+		MMLModel result =parseHelper.parse("datainput \"C:/CSVFile/iris.csv\" \n" + 
+				"mlframework scikit-learn \n" + 
+				"algorithm DecisionTree \n" + 
+				"TrainingTest {percentageTraining 70}\n" + 
+				"accuracy \n" + 
+				"F1\n" + 
+				"recall ");
 		
 		Double sommeAcc = 0.0;
 		Double sommeDur = 0.0;

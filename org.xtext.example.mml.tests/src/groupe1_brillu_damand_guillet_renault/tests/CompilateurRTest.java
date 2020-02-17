@@ -24,7 +24,8 @@ public class CompilateurRTest {
 	ParseHelper<MMLModel> parseHelper;
 	
 	//final String CSV_FOLDER = "\"C:/Users/pbril/Documents/R_workspace/iris.csv\"";
-	final String CSV_FOLDER = "\"C:/Users/A730437/Documents/MIAGE/IDM/R_IDM/iris.csv\"";
+//	final String CSV_FOLDER = "\"C:/Users/A730437/Documents/MIAGE/IDM/R_IDM/iris.csv\"";
+	final String CSV_FOLDER = "\"C:/Users/pbril/Documents/M2 MIAGE/IDM/TP3/MML-classification/org.xtext.example.mml.tests/iris.csv\"";
 	
 	@Test
 	public void testR() throws Exception {

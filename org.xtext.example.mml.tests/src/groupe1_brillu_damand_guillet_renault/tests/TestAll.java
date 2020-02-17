@@ -2,7 +2,10 @@ package groupe1_brillu_damand_guillet_renault.tests;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.xtext.testing.InjectWith;
 import org.eclipse.xtext.testing.extensions.InjectionExtension;
@@ -24,8 +27,11 @@ public class TestAll {
 	ParseHelper<MMLModel> parseHelper;
 	
 	//final String CSV_FOLDER = "\"C:/Users/pbril/Documents/R_workspace/iris.csv\"";
-	final String CSV_FOLDER = "\"C:/Users/A730437/Documents/MIAGE/IDM/R_IDM/iris.csv\"";
+//	final String CSV_FOLDER = "\"C:/Users/A730437/Documents/MIAGE/IDM/R_IDM/iris.csv\"";	
+	final String CSV_FOLDER = "\"C:/Users/pbril/Documents/M2 MIAGE/IDM/TP3/MML-classification/org.xtext.example.mml.tests/iris.csv\"";
+	final static String MML_FOLDER = "mml-files/";
 	
+	/*
 	@Test
 	public void testWekaDT() throws Exception {
 		MMLModel result = parseHelper.parse("datainput "+CSV_FOLDER+" separator ;\n"
@@ -55,7 +61,7 @@ public class TestAll {
 		out = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 		String line;
 		while ((line = in.readLine()) != null) {
-			//System.out.println(line);
+			System.out.println(line);
 	    }
 		long elapsedTime = System.nanoTime() - startTime;
 		System.err.println(Compilateur.getFramework(result));
@@ -65,12 +71,18 @@ public class TestAll {
 	
 	@Test
 	public void testWekaRF() throws Exception {
-		MMLModel result = parseHelper.parse("datainput "+CSV_FOLDER+" separator ;\n"
-				+ "mlframework Weka\n"
-				+ "algorithm RF\n"
-				+ "TrainingTest { percentageTraining 70 }\n"
-				+ "accuracy\n"
-				+ "");
+		MMLModel result = parseHelper.parse("datainput \"C:/CSVFile/iris.csv\" separator ,  \n" + 
+				"mlframework Weka \n" + 
+				"algorithm SVM formula 5~.\n" + 
+				"TrainingTest {percentageTraining 70} \n" + 
+				"accuracy");
+//		BufferedReader mmlReader = new BufferedReader(new FileReader("mml-files/r_dt.mml"));
+//		String lineR="";
+//		String mml="";
+//		while ((lineR = mmlReader.readLine()) != null) {
+//			mml += lineR;
+//		}
+//		MMLModel result = parseHelper.parse(mml);
 		
 		String traitementAlgo = Compilateur.traitementAlgo(result);	
 		
@@ -82,7 +94,7 @@ public class TestAll {
 		BufferedReader out = new BufferedReader(new InputStreamReader(generateClass.getErrorStream()));
 		String line1;
 		while ((line1 = in.readLine()) != null) {
-			//System.out.println(line1);
+//			System.out.println(line1);
 	    }
 		
 		Process p = Runtime.getRuntime().exec("java -cp \".;./weka-3.7.0.jar\" main");
@@ -91,7 +103,7 @@ public class TestAll {
 		out = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 		String line;
 		while ((line = in.readLine()) != null) {
-			//System.out.println(line);
+			System.out.println(line);
 	    }
 		long elapsedTime = System.nanoTime() - startTime;
 		System.err.println(Compilateur.getFramework(result));
@@ -127,7 +139,7 @@ public class TestAll {
 		out = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 		String line;
 		while ((line = in.readLine()) != null) {
-			//System.out.println(line);
+			System.out.println(line);
 	    }
 		long elapsedTime = System.nanoTime() - startTime;
 		System.err.println(Compilateur.getFramework(result));
@@ -153,7 +165,7 @@ public class TestAll {
 		BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
 		String line; 
 		while ((line = in.readLine()) != null) {
-			//System.out.println(line);
+			System.out.println(line);
 	    }
 		long elapsedTime = System.nanoTime() - startTime;
 		System.err.println(Compilateur.getFramework(result));
@@ -175,7 +187,7 @@ public class TestAll {
 		BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
 		String line; 
 		while ((line = in.readLine()) != null) {
-			//System.out.println(line);
+			System.out.println(line);
 	    }
 		long elapsedTime = System.nanoTime() - startTime;
 		System.err.println(Compilateur.getFramework(result));
@@ -200,7 +212,7 @@ public class TestAll {
 		BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
 		String line; 
 		while ((line = in.readLine()) != null) {
-			//System.out.println(line);
+			System.out.println(line);
 	    }
 		long elapsedTime = System.nanoTime() - startTime;
 		System.err.println(Compilateur.getFramework(result));
@@ -211,12 +223,19 @@ public class TestAll {
 	
 	@Test
 	public void testScikitDT() throws Exception {
-		MMLModel result = parseHelper.parse("datainput "+CSV_FOLDER+" separator ;\n"
-				+ "mlframework scikit-learn\n"
-				+ "algorithm DT\n"
-				+ "TrainingTest { percentageTraining 70 }\n"
-				+ "accuracy\n"
-				+ "");
+//		MMLModel result = parseHelper.parse("datainput "+CSV_FOLDER+" separator ;\n"
+//				+ "mlframework scikit-learn\n"
+//				+ "algorithm DT\n"
+//				+ "TrainingTest { percentageTraining 70 }\n"
+//				+ "accuracy\n"
+//				+ "");
+		MMLModel result =parseHelper.parse("datainput \"C:/CSVFile/iris.csv\" \n" + 
+				"mlframework scikit-learn \n" + 
+				"algorithm DecisionTree \n" + 
+				"TrainingTest {percentageTraining 70}\n" + 
+				"accuracy \n" + 
+				"F1\n" + 
+				"recall ");
 		String pandasCode = Compilateur.traitementAlgo(result);	
 		
 		Files.write(pandasCode.getBytes(), new File("mml.py"));
@@ -226,7 +245,7 @@ public class TestAll {
 		BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
 		String line; 
 		while ((line = in.readLine()) != null) {
-			//System.out.println(line);
+			System.out.println(line);
 	    }
 		long elapsedTime = System.nanoTime() - startTime;
 		System.err.println(Compilateur.getFramework(result));
@@ -250,7 +269,7 @@ public class TestAll {
 		BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
 		String line; 
 		while ((line = in.readLine()) != null) {
-			//System.out.println(line);
+			System.out.println(line);
 	    }
 		long elapsedTime = System.nanoTime() - startTime;
 		System.err.println(Compilateur.getFramework(result));
@@ -274,11 +293,54 @@ public class TestAll {
 		BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
 		String line; 
 		while ((line = in.readLine()) != null) {
-			//System.out.println(line);
+			System.out.println(line);
 	    }
 		long elapsedTime = System.nanoTime() - startTime;
 		System.err.println(Compilateur.getFramework(result));
 		System.err.println(Compilateur.getAlgo(result));
 		System.err.println("temps d'execution : " + elapsedTime/1000000000.0);
+	}*/
+	
+	@Test
+	public void testFromFolder() throws Exception {
+		
+		//On recupere tous les noms de fichiers 
+		List<String> results = new ArrayList<String>();
+		File[] filesInFolder = new File(MML_FOLDER).listFiles();
+		for (File file : filesInFolder) {
+			BufferedReader mmlReader = new BufferedReader(new FileReader(file));
+			String lineR="";
+			String mml="";
+			while ((lineR = mmlReader.readLine()) != null) {
+				mml += lineR;
+			}
+			MMLModel result = parseHelper.parse(mml);
+			
+			String traitementAlgo = Compilateur.traitementAlgo(result);	
+			
+			Files.write(traitementAlgo.getBytes(), new File("Main.java"));
+			long startTime = System.nanoTime();
+			
+			Process generateClass = Runtime.getRuntime().exec("javac -cp \".;./weka-3.7.0.jar\" main.java");
+			BufferedReader in = new BufferedReader(new InputStreamReader(generateClass.getInputStream()));
+			BufferedReader out = new BufferedReader(new InputStreamReader(generateClass.getErrorStream()));
+			String line1;
+			while ((line1 = in.readLine()) != null) {
+//				System.out.println(line1);
+		    }
+			
+			Process p = Runtime.getRuntime().exec("java -cp \".;./weka-3.7.0.jar\" main");
+
+			in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			out = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+			String line;
+			while ((line = in.readLine()) != null) {
+				System.out.println(line);
+		    }
+			long elapsedTime = System.nanoTime() - startTime;
+			System.err.println(Compilateur.getFramework(result));
+			System.err.println(Compilateur.getAlgo(result));
+			System.err.println("temps d'execution : " + elapsedTime/1000000000.0);
+		}
 	}
 }
