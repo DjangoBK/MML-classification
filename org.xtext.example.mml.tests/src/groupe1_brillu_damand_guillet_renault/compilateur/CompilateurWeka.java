@@ -47,7 +47,9 @@ MLChoiceAlgorithm algo;
 		}
 		else if (algo.getAlgorithm() instanceof SVM) {
 			String supported = "SVM indisponible avec le framework weka";
-			res += "System.out.println("+supported+")";
+			res += "System.out.println(\"SVM indisponible avec le framework weka\");\n" + 
+					"}\n"
+					+ "}";
 		}
 		else if (algo.getAlgorithm() instanceof RandomForest) {
 			res += traitementRandomForest();
