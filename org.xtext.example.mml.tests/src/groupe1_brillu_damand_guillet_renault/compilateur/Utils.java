@@ -12,7 +12,7 @@ public class Utils {
 
         try {
             //penser a changer le chemin du file
-            FileWriter writer = new FileWriter("./src/main/resources/data.csv",true);
+            FileWriter writer = new FileWriter("data.csv",true);
             writer.write(data+"\n");
             writer.close();
 

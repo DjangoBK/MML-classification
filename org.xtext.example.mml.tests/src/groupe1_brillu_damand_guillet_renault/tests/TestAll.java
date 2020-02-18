@@ -309,6 +309,7 @@ public class TestAll {
 		List<String> results = new ArrayList<String>();
 		File[] filesInFolder = new File(MML_FOLDER).listFiles();
 		for (File file : filesInFolder) {
+			System.out.println(file.getName());
 			BufferedReader mmlReader = new BufferedReader(new FileReader(file));
 			String lineR="";
 			String mml="";
@@ -316,16 +317,14 @@ public class TestAll {
 				mml += lineR;
 			}
 			MMLModel result = parseHelper.parse(mml);
-			
-			System.err.println(result.getAlgorithms());
-			
+						
 			Compilateur.traitementAlgo(result);	
 		}
 	}
 	
 	@Test
 	public void testOneFile() throws Exception {
-		File file = new File(MML_FOLDER + "r_dt.mml");
+		File file = new File(MML_FOLDER + "scikit_lr.mml");
 		
 		BufferedReader mmlReader = new BufferedReader(new FileReader(file));
 		String lineR="";
@@ -334,8 +333,6 @@ public class TestAll {
 			mml += lineR;
 		}
 		MMLModel result = parseHelper.parse(mml);
-		
-		System.err.println(result.getAlgorithms());
 		
 		Compilateur.traitementAlgo(result);
 	}

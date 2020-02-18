@@ -39,7 +39,6 @@ public class Compilateur {
 		for(MLChoiceAlgorithm mlcalgo : algorithms) {
 			FrameworkLang framworkLang = mlcalgo.getFramework();
 			if(framworkLang == FrameworkLang.SCIKIT) {
-				System.out.println(mlcalgo.toString());
 				CompilateurScikitLearn compilateur = new CompilateurScikitLearn(result, mlcalgo);
 				execScikit(compilateur.traitement(), "scikit", compilateur.getAlgo(), compilateur.getDataset());
 			}
@@ -49,33 +48,47 @@ public class Compilateur {
 			}
 			else if(framworkLang == FrameworkLang.JAVA_WEKA) {
 				CompilateurWeka compilateur = new CompilateurWeka(result, mlcalgo);
-				execWeka(compilateur.traitement());
+				execWeka(compilateur.traitement(), "weka", compilateur.getAlgoName(), compilateur.getDataSet());
 			}
 		}
 	}
 	
-	public static void execWeka(String traitementAlgo) throws IOException {
-		Files.write(traitementAlgo.getBytes(), new File("Main.java"));
-		long startTime = System.nanoTime();
+	public static void execWeka(String traitementAlgo, String framework, String algo, String dataSet) throws IOException {
+		Double sommeAcc = 0.0;
+		Double sommeDur = 0.0;
+		int rep = 0;
 		
-		Process generateClass = Runtime.getRuntime().exec("javac -cp \".;./weka-3.7.0.jar\" main.java");
-		BufferedReader in = new BufferedReader(new InputStreamReader(generateClass.getInputStream()));
-		BufferedReader out = new BufferedReader(new InputStreamReader(generateClass.getErrorStream()));
-		String line1;
-		while ((line1 = in.readLine()) != null) {}
-		
-		Process p = Runtime.getRuntime().exec("java -cp \".;./weka-3.7.0.jar\" main");
+		while(rep<20) {
+			System.out.println(rep);
+			Files.write(traitementAlgo.getBytes(), new File("Main.java"));
+			long startTime = System.nanoTime();
+			
+			Process generateClass = Runtime.getRuntime().exec("javac -cp \".;./weka-3.7.0.jar\" main.java");
+			BufferedReader in = new BufferedReader(new InputStreamReader(generateClass.getInputStream()));
+			BufferedReader out = new BufferedReader(new InputStreamReader(generateClass.getErrorStream()));
+			String line1;
+			while ((line1 = in.readLine()) != null) {}
+			
+			Process p = Runtime.getRuntime().exec("java -cp \".;./weka-3.7.0.jar\" main");
 
-		in = new BufferedReader(new InputStreamReader(p.getInputStream()));
-		out = new BufferedReader(new InputStreamReader(p.getErrorStream()));
-		String line;
-		Double metric = 0.0;
-		while ((line = in.readLine()) != null) {
-			metric = Double.parseDouble(line.split("= ")[1]);
-	    }
-		long elapsedTime = System.nanoTime() - startTime;
-		System.err.println(metric);
-		System.err.println("temps d'execution : " + elapsedTime/1000000000.0);
+			in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			out = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+			String line;
+			Double metric = 0.0;
+			while ((line = in.readLine()) != null) {
+				metric = Double.parseDouble(line.split("= ")[1]);
+		    }
+			long elapsedTime = System.nanoTime() - startTime;
+			sommeAcc += metric;
+			sommeDur += elapsedTime/1000000000.0;
+			rep++;
+		}
+		System.err.println("dataset = " + dataSet);
+		System.err.println("framework = " + framework);
+		System.err.println("algo = " + algo);
+		System.err.println("moyenne acc = " + sommeAcc/rep);
+		System.err.println("moyenne temps = " + sommeDur/rep);
+		Utils.createCsvFile(dataSet + "," + framework +"," + algo +"," + sommeAcc/rep+ ","+sommeDur/rep);
 	}
 	
 	public static void execScikit(String pandasCode, String framework, String algo, String dataSet) throws IOException {
@@ -109,27 +122,39 @@ public class Compilateur {
 		System.err.println("algo = " + algo);
 		System.err.println("moyenne acc = " + sommeAcc/rep);
 		System.err.println("moyenne temps = " + sommeDur/rep);
+		Utils.createCsvFile(dataSet + "," + framework +"," + algo +"," + sommeAcc/rep+ ","+sommeDur/rep);
 	}
 	
 	public static void execR(String pandasCode, String framework, String algo, String dataSet) throws IOException {
-		Files.write(pandasCode.getBytes(), new File("mml.R"));
+		Double sommeAcc = 0.0;
+		Double sommeDur = 0.0;
+		int rep = 0;
 		
-		long startTime = System.nanoTime();
-		Process p = Runtime.getRuntime().exec("Rscript mml.R");
-		BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
-		String line;
-		String last="";
-		int c = 0;
-		while ((line = in.readLine()) != null) {
-			last = line;
-	    }
-		long elapsedTime = System.nanoTime() - startTime;
-		double metric = Double.parseDouble(last);
+		while(rep<20) {
+			Files.write(pandasCode.getBytes(), new File("mml.R"));
+			
+			long startTime = System.nanoTime();
+			Process p = Runtime.getRuntime().exec("Rscript mml.R");
+			BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			String line;
+			String last="";
+			int c = 0;
+			while ((line = in.readLine()) != null) {
+				last = line;
+		    }
+			long elapsedTime = System.nanoTime() - startTime;
+			System.out.println(last);
+			double metric = Double.parseDouble(last);
+			sommeAcc += metric;
+			sommeDur += elapsedTime/1000000000.0;
+			rep++;
+		}
+		
 		System.err.println("dataset = " + dataSet);
 		System.err.println("framework = " + framework);
 		System.err.println("algo = " + algo);
-		System.err.println("metric = " + metric);
-		System.err.println("temps d'execution : " + elapsedTime/1000000000.0);
-		in.close();
+		System.err.println("moyenne acc = " + sommeAcc/rep);
+		System.err.println("moyenne temps = " + sommeDur/rep);
+		Utils.createCsvFile(dataSet + "," + framework +"," + algo +"," + sommeAcc/rep+ ","+sommeDur/rep);
 	}
 }

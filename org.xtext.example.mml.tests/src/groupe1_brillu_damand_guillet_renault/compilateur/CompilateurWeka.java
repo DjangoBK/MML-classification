@@ -17,6 +17,9 @@ import org.xtext.example.mydsl.mml.impl.SVMImpl;
 public class CompilateurWeka {
 MMLModel result;
 MLChoiceAlgorithm algo;
+String algoName;
+String dataSet;
+
 	
 	public CompilateurWeka(MMLModel result, MLChoiceAlgorithm mlAlgo) {
 		this.result = result;
@@ -28,6 +31,8 @@ MLChoiceAlgorithm algo;
 		
 		DataInput dataInput = result.getInput();
 		String fileLocation = dataInput.getFilelocation();
+		String fileName = fileLocation.split("/")[fileLocation.split("/").length-1].replace(".csv", "");
+		setDataSet(fileName);
 		double test_size = result.getValidation().getStratification().getNumber()/100.0;
 		
 		res += "\t\tCSVLoader loader = new CSVLoader();\n"
@@ -66,18 +71,21 @@ MLChoiceAlgorithm algo;
 	
 	/** Algo DT **/
 	public String traitementDT() {
+		setAlgoName("DT");
 		return "\t\tClassifier cls = new J48();\n" + 
 				"\t\tcls.buildClassifier(train);\n";
 	}
 	
 	/** Algo Ramdom Forest **/
 	public String traitementRandomForest() {
+		setAlgoName("RF");
 		return "\t\tClassifier cls = new RandomForest();\n" + 
 				"\t\tcls.buildClassifier(train);\n";
 	}
 	
 	/** Algo Logistic Regession **/
 	public String traitementLogisticRegression() {
+		setAlgoName("LR");
 		return "\t\tClassifier cls = new Logistic();\n" + 
 				"\t\tcls.buildClassifier(train);\n";
 	}
@@ -131,4 +139,22 @@ MLChoiceAlgorithm algo;
 				"\n" + 
 				"	public static void main(String[] args) throws Exception {\n";
 	}
+
+	public String getAlgoName() {
+		return algoName;
+	}
+
+	public void setAlgoName(String algoName) {
+		this.algoName = algoName;
+	}
+
+	public String getDataSet() {
+		return dataSet;
+	}
+
+	public void setDataSet(String dataSet) {
+		this.dataSet = dataSet;
+	}
+	
+	
 }
