@@ -64,6 +64,7 @@ public class CompilateurR {
 	}
 
 	private String traitementDT() {
+		setAlgoName("DT");
 		double test_size = result.getValidation().getStratification().getNumber()/100.0;
 		String size = "test_size = " + test_size +"\n";
 		String nbVar = "nbVar <- dim(mml_data)[2]\n";
@@ -81,11 +82,13 @@ public class CompilateurR {
 	}
 
 	private String traitementLogisticRegression() {
+		setAlgoName("LR");
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	private String traitementRandomForest() {
+		setAlgoName("RF");
 		double test_size = result.getValidation().getStratification().getNumber()/100.0;
 		String size = "test_size = " + test_size +"\n";
 		String nbVar = "nbVar <- dim(mml_data)[2]\n";
@@ -102,6 +105,7 @@ public class CompilateurR {
 	}
 
 	private String traitementSVM() {
+		setAlgoName("SVM");
 		double test_size = result.getValidation().getStratification().getNumber()/100.0;
 		String size = "test_size = " + test_size +"\n";
 		String nbVar = "nbVar <- dim(mml_data)[2]\n";

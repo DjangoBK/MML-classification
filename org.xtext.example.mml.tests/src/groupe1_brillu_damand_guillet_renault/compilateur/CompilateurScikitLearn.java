@@ -17,6 +17,7 @@ public class CompilateurScikitLearn {
 	MMLModel result;
 	String importList;
 	MLChoiceAlgorithm algorithm;
+	String algo;
 	
 	public CompilateurScikitLearn(MMLModel result, MLChoiceAlgorithm algorithm) {
 		this.result = result;
@@ -67,6 +68,7 @@ public class CompilateurScikitLearn {
 	
 	/** Algo SVM **/
 	public String traitementSVM() {
+		setAlgo("SVM");
 		SVMImpl algo = (SVMImpl) this.algorithm.getAlgorithm() ;
 		
 		double test_size = result.getValidation().getStratification().getNumber()/100.0;
@@ -123,6 +125,7 @@ public class CompilateurScikitLearn {
 	
 	/** Algo DT **/
 	public String traitementDT() {
+		setAlgo("DT");
 		double test_size = result.getValidation().getStratification().getNumber()/100.0;
 		String size = "test_size = " + test_size +"\n";
 		
@@ -139,6 +142,7 @@ public class CompilateurScikitLearn {
 	
 	/** Algo Random Forest**/
 	public String traitementRandomForest() {
+		setAlgo("RF");
 		double test_size = result.getValidation().getStratification().getNumber()/100.0;
 		String size = "test_size = " + test_size +"\n";
 		
@@ -162,6 +166,7 @@ public class CompilateurScikitLearn {
 	
 	/** Algo Logistic Regression**/
 	public String traitementLogisticRegression() {
+		setAlgo("LR");
 		
 		double test_size = result.getValidation().getStratification().getNumber()/100.0;
 		String size = "test_size = " + test_size +"\n";
@@ -244,4 +249,14 @@ public class CompilateurScikitLearn {
 	private static String mkValueInSingleQuote(String val) {
 		return "'" + val + "'";
 	}
+
+	public String getAlgo() {
+		return algo;
+	}
+
+	public void setAlgo(String algo) {
+		this.algo = algo;
+	}
+	
+	
 }
