@@ -36,7 +36,7 @@ public class CompilateurR {
 		String fileLocation = dataInput.getFilelocation();
 		String csvReading = "mml_data = read.table(" + mkValueInSingleQuote(fileLocation) + ", header=  T, sep=',')";
 		res+= csvReading + "\n";
-		setPredVar();
+//		setPredVar();
 		
 		//traitementStratificationMethod();
 		if(this.algorithm.getAlgorithm() instanceof DT) {
@@ -66,7 +66,7 @@ public class CompilateurR {
 	private String traitementDT() {
 		double test_size = result.getValidation().getStratification().getNumber()/100.0;
 		String size = "test_size = " + test_size +"\n";
-		String nbVar = "dim(mml_data)[2]";
+		String nbVar = "nbVar <- dim(mml_data)[2]\n";
 		String sample = "train <- sample(1:nrow(mml_data),size = ceiling(test_size*nrow(mml_data)),replace = FALSE) \n";
 		String train = "train_set = mml_data[train,] \n";
 		String test = "test_set = mml_data[-train,] \n";
@@ -88,7 +88,7 @@ public class CompilateurR {
 	private String traitementRandomForest() {
 		double test_size = result.getValidation().getStratification().getNumber()/100.0;
 		String size = "test_size = " + test_size +"\n";
-		String nbVar = "dim(mml_data)[2]";
+		String nbVar = "nbVar <- dim(mml_data)[2]\n";
 		String sample = "ind <- sample(2,nrow(mml_data),replace=TRUE,prob=c(test_size,(1-test_size))) \n";
 		String train = "trainData <- mml_data[ind==1,] \n";
 		String test = "testData <- mml_data[ind==2,] \n";
@@ -104,7 +104,7 @@ public class CompilateurR {
 	private String traitementSVM() {
 		double test_size = result.getValidation().getStratification().getNumber()/100.0;
 		String size = "test_size = " + test_size +"\n";
-		String nbVar = "dim(mml_data)[2]";
+		String nbVar = "nbVar <- dim(mml_data)[2]\n";
 		String sample = "train <- sample(1:nrow(mml_data),size = ceiling(test_size*nrow(mml_data)),replace = FALSE) \n";
 		String train = "train_set = mml_data[train,] \n";
 		String test = "test_set = mml_data[-train,] \n";
