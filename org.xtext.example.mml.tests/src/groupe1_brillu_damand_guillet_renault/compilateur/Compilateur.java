@@ -132,23 +132,4 @@ public class Compilateur {
 		System.err.println("temps d'execution : " + elapsedTime/1000000000.0);
 		in.close();
 	}
-
-	public String getAlgo() {
-		return algo;
-	}
-
-	public void setAlgo(String algo) {
-		this.algo = algo;
-	}
-
-	public String getFramework() {
-		return framework;
-	}
-
-	public void setFramework(String framework) {
-		this.framework = framework;
-	}
-	
-	
-
 }
