@@ -19,6 +19,7 @@ public class CompilateurR {
 	int nbVar = 5;
 	String predVar = "variety";
 	String algoName;
+	String dataSet;
 
 	public CompilateurR(MMLModel result, MLChoiceAlgorithm algorithm) {
 		this.result = result;
@@ -34,6 +35,8 @@ public class CompilateurR {
 				"library(e1071) \n"; //all
 		DataInput dataInput = result.getInput();
 		String fileLocation = dataInput.getFilelocation();
+		String fileName = fileLocation.split("/")[fileLocation.split("/").length-1].replace(".csv", "");
+		setDataSet(fileName);
 		String csvReading = "mml_data = read.table(" + mkValueInSingleQuote(fileLocation) + ", header=  T, sep=',')";
 		res+= csvReading + "\n";
 //		setPredVar();
@@ -197,6 +200,16 @@ public class CompilateurR {
 		}
 		System.out.println(predVar);*/
 	}
+
+	public String getDataSet() {
+		return dataSet;
+	}
+
+	public void setDataSet(String dataSet) {
+		this.dataSet = dataSet;
+	}
+	
+	
 	
 	
 

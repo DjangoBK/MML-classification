@@ -18,6 +18,7 @@ public class CompilateurScikitLearn {
 	String importList;
 	MLChoiceAlgorithm algorithm;
 	String algo;
+	String dataset;
 	
 	public CompilateurScikitLearn(MMLModel result, MLChoiceAlgorithm algorithm) {
 		this.result = result;
@@ -42,6 +43,8 @@ public class CompilateurScikitLearn {
 				+ "\n";
 		DataInput dataInput = result.getInput();
 		String fileLocation = dataInput.getFilelocation();
+		String fileName = fileLocation.split("/")[fileLocation.split("/").length-1].replace(".csv", "");
+		setDataset(fileName);
 		String csvReading = "mml_data = pd.read_csv(" + mkValueInSingleQuote(fileLocation) + ")";
 		res+= csvReading + "\n";
 		
@@ -257,6 +260,16 @@ public class CompilateurScikitLearn {
 	public void setAlgo(String algo) {
 		this.algo = algo;
 	}
+
+	public String getDataset() {
+		return dataset;
+	}
+
+	public void setDataset(String dataset) {
+		this.dataset = dataset;
+	}
+	
+	
 	
 	
 }
