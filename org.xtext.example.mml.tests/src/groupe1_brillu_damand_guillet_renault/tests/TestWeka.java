@@ -26,7 +26,7 @@ public class TestWeka {
 	ParseHelper<MMLModel> parseHelper;
 	
 	//final String CSV_FOLDER = "\"C:/Users/pbril/Documents/R_workspace/iris.csv\"";
-	final String CSV_FOLDER = "\"C:/Users/A730437/Documents/MIAGE/IDM/R_IDM/iris.csv\"";
+	/*final String CSV_FOLDER = "\"C:/Users/A730437/Documents/MIAGE/IDM/R_IDM/iris.csv\"";
 	
 	@Test
 	public void testWekaDT() throws Exception {
@@ -140,6 +140,6 @@ public class TestWeka {
 		System.err.println(Compilateur.getAlgo(result));
 		System.err.println(metric);
 		System.err.println("temps d'execution : " + elapsedTime/1000000000.0);
-	}
+	}*/
 	
 }

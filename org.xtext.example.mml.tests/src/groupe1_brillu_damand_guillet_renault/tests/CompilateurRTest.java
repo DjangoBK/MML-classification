@@ -25,7 +25,7 @@ public class CompilateurRTest {
 	
 	//final String CSV_FOLDER = "\"C:/Users/pbril/Documents/R_workspace/iris.csv\"";
 //	final String CSV_FOLDER = "\"C:/Users/A730437/Documents/MIAGE/IDM/R_IDM/iris.csv\"";
-	final String CSV_FOLDER = "\"C:/Users/pbril/Documents/M2 MIAGE/IDM/TP3/MML-classification/org.xtext.example.mml.tests/iris.csv\"";
+	/*final String CSV_FOLDER = "\"C:/Users/pbril/Documents/M2 MIAGE/IDM/TP3/MML-classification/org.xtext.example.mml.tests/iris.csv\"";
 	
 	@Test
 	public void testR() throws Exception {
@@ -58,5 +58,5 @@ public class CompilateurRTest {
 		System.err.println(" ; " + metric);
 		System.err.println("temps d'execution : " + elapsedTime/1000000000.0);
 		in.close();
-	}
+	}*/
 }

@@ -25,7 +25,7 @@ public class CompilateurScikitLearnTest {
 	
 	@Inject
 	ParseHelper<MMLModel> parseHelper;
-	
+	/*
 	final String CSV_FOLDER = "\"C:/Users/pbril/Documents/R_workspace/iris.csv\"";
 	
 	@Test
@@ -116,7 +116,7 @@ public class CompilateurScikitLearnTest {
 		System.err.println("moyenne acc = " + sommeAcc/rep);
 		System.err.println("moyenne temps = " + sommeDur/rep);
 	}
-	*/
+	
 	@Test
 	public void compilerTest3() throws Exception {		
 //		MMLModel result =parseHelper.parse("datainput \"C:/CSVFile/iris.csv\" \r\n" + 
@@ -158,5 +158,5 @@ public class CompilateurScikitLearnTest {
 		System.err.println("moyenne acc = " + sommeAcc/rep);
 		System.err.println("moyenne temps = " + sommeDur/rep);
 		
-	}
+	}*/
 }
