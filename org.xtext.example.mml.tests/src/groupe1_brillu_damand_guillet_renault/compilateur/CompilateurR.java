@@ -1,5 +1,7 @@
 package groupe1_brillu_damand_guillet_renault.compilateur;
 
+import javax.rmi.CORBA.Util;
+
 import org.xtext.example.mydsl.mml.CrossValidation;
 import org.xtext.example.mydsl.mml.DT;
 import org.xtext.example.mydsl.mml.DataInput;
@@ -39,7 +41,8 @@ public class CompilateurR {
 		setDataSet(fileName);
 		String csvReading = "mml_data = read.table(" + mkValueInSingleQuote(fileLocation) + ", header=  T, sep=',')";
 		res+= csvReading + "\n";
-//		setPredVar();
+		setPredVar(fileLocation, ",");
+		System.err.println(this.predVar);
 		
 		//traitementStratificationMethod();
 		if(this.algorithm.getAlgorithm() instanceof DT) {
@@ -188,17 +191,20 @@ public class CompilateurR {
 		this.algoName = algoName;
 	}
 	
-	public void setPredVar() {
-		System.err.println("Formula : " + result.getFormula().getPredictive());
-		/*if(result.getFormula() != null) {
+	public void setPredVar(String fileLocation, String separator) {
+		System.err.println("Formula : " + result.getFormula().getPredictors());
+		if(result.getFormula() != null) {
 			if(result.getFormula().getPredictive().getColName() != null) {
 				this.predVar = result.getFormula().getPredictive().getColName();
 			}
+			else if(result.getFormula().getPredictive().getColumn() != 0) {
+				this.predVar = Utils.getCol(fileLocation, separator, result.getFormula().getPredictive().getColumn());
+			}
 		}
 		else {
-			this.predVar = "???";
+			this.predVar = Utils.getLastCol(fileLocation, separator);
 		}
-		System.out.println(predVar);*/
+		System.out.println(predVar);
 	}
 
 	public String getDataSet() {
