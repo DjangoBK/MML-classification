@@ -19,6 +19,7 @@ public class CompilateurScikitLearn {
 	MLChoiceAlgorithm algorithm;
 	String algo;
 	String dataset;
+	String predVar;
 	
 	public CompilateurScikitLearn(MMLModel result, MLChoiceAlgorithm algorithm) {
 		this.result = result;
@@ -45,8 +46,13 @@ public class CompilateurScikitLearn {
 		String fileLocation = dataInput.getFilelocation();
 		String fileName = fileLocation.split("/")[fileLocation.split("/").length-1].replace(".csv", "");
 		setDataset(fileName);
+		System.err.println("XXX");
+		setPredVar(fileLocation, ",");
+		System.err.println(this.predVar);
 		String csvReading = "mml_data = pd.read_csv(" + mkValueInSingleQuote(fileLocation) + ")";
 		res+= csvReading + "\n";
+		
+		System.err.println(this.algorithm.getAlgorithm());
 		
 		//traitementStratificationMethod();
 		if(this.algorithm.getAlgorithm() instanceof DT) {
@@ -267,6 +273,10 @@ public class CompilateurScikitLearn {
 
 	public void setDataset(String dataset) {
 		this.dataset = dataset;
+	}
+	
+	public void setPredVar(String fileLocation, String separator) {
+		this.predVar = Utils.getLastCol(fileLocation, separator);
 	}
 	
 	
