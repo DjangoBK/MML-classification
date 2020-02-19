@@ -31,6 +31,7 @@ public class Utils {
 			String fl = Files.lines(file.toPath()).findFirst().get();
 			String[] array = fl.split(separator);
 			System.out.println(array[array.length-1]);
+			return array[array.length-1];
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -43,9 +44,22 @@ public class Utils {
 			String fl = Files.lines(file.toPath()).findFirst().get();
 			String[] array = fl.split(separator);
 			System.out.println(col);
+			return array[col-1];
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
     	return null;
+    }
+    
+    public static int getNbCol(String fileLocation, String separator) {
+    	File file = new File(fileLocation);
+    	try {
+			String fl = Files.lines(file.toPath()).findFirst().get();
+			String[] array = fl.split(separator);
+			return array.length;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    	return 0;
     }
 }
