@@ -18,8 +18,8 @@ public class CompilateurR {
 	MMLModel result;
 	MLChoiceAlgorithm algorithm;
 	
-	int nbVar = 5;
-	String predVar = "variety";
+	int nbVar;
+	String predVar;
 	String algoName;
 	String dataSet;
 
@@ -42,7 +42,8 @@ public class CompilateurR {
 		String csvReading = "mml_data = read.table(" + mkValueInSingleQuote(fileLocation) + ", header=  T, sep=',')";
 		res+= csvReading + "\n";
 		setPredVar(fileLocation, ",");
-		System.err.println(this.predVar);
+		setNbVar(fileLocation, ",");
+		System.err.println(this.predVar + " ------ " + this.nbVar);
 		
 		//traitementStratificationMethod();
 		if(this.algorithm.getAlgorithm() instanceof DT) {
@@ -214,6 +215,16 @@ public class CompilateurR {
 	public void setDataSet(String dataSet) {
 		this.dataSet = dataSet;
 	}
+
+	public int getNbVar() {
+		return nbVar;
+	}
+
+	public void setNbVar(String fileLocation, String separator) {
+		this.nbVar = Utils.getNbCol(fileLocation, separator);
+	}
+	
+	
 	
 	
 	
