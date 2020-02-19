@@ -1,5 +1,6 @@
 datainput "C:/CSVFile/iris.csv" 
 mlframework scikit-learn 
 algorithm RF 
+formula "variety"
 TrainingTest {percentageTraining 70}
 accuracy

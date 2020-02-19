@@ -1,5 +1,6 @@
 datainput "C:/CSVFile/iris.csv" 
 mlframework scikit-learn 
-algorithm DecisionTree 
+algorithm DecisionTree
+formula "variety" 
 TrainingTest {percentageTraining 70}
 accuracy

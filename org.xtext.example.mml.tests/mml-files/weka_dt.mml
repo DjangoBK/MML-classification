@@ -1,5 +1,6 @@
 datainput "C:/CSVFile/iris.csv" 
 mlframework Weka 
 algorithm DecisionTree 
+formula "variety"
 TrainingTest {percentageTraining 70}
 accuracy
