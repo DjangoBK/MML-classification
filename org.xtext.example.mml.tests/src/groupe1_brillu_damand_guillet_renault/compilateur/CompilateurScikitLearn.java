@@ -46,9 +46,7 @@ public class CompilateurScikitLearn {
 		String fileLocation = dataInput.getFilelocation();
 		String fileName = fileLocation.split("/")[fileLocation.split("/").length-1].replace(".csv", "");
 		setDataset(fileName);
-		System.err.println("XXX");
 		setPredVar(fileLocation, ",");
-		System.err.println(this.predVar);
 		String csvReading = "mml_data = pd.read_csv(" + mkValueInSingleQuote(fileLocation) + ")";
 		res+= csvReading + "\n";
 		
@@ -85,7 +83,7 @@ public class CompilateurScikitLearn {
 		
 		String TRAIN_TEST_SPLIT = "X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size="+ test_size +") \n";
 		String split = "X = mml_data.drop(columns=[\"variety\"])\n"
-				+ "Y = mml_data[\"variety\"]\n";
+				+ "Y = mml_data[\""+this.predVar+"\"]\n";
 		String algoSet = "";
 		
 		String Cclass = algo.getC();
@@ -138,7 +136,7 @@ public class CompilateurScikitLearn {
 		double test_size = result.getValidation().getStratification().getNumber()/100.0;
 		String size = "test_size = " + test_size +"\n";
 		
-		String split = "X = mml_data.drop(columns=[\"variety\"])\n"
+		String split = "X = mml_data.drop(columns=[\""+this.predVar+"\"])\n"
 				+ "Y = mml_data[\"variety\"]\n";
 		
 		String TRAIN_TEST_SPLIT = "X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size="+ test_size +") \n";
@@ -155,7 +153,7 @@ public class CompilateurScikitLearn {
 		double test_size = result.getValidation().getStratification().getNumber()/100.0;
 		String size = "test_size = " + test_size +"\n";
 		
-		String split = "X = mml_data.drop(columns=[\"variety\"])\n"
+		String split = "X = mml_data.drop(columns=[\""+this.predVar+"\"])\n"
 				+ "Y = mml_data[\"variety\"]\n";
 		
 		String TRAIN_TEST_SPLIT = "X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size="+ test_size +") \n";
@@ -181,7 +179,7 @@ public class CompilateurScikitLearn {
 		String size = "test_size = " + test_size +"\n";
 		
 		String split = "X = mml_data.drop(columns=[\"variety\"])\n"
-				+ "Y = mml_data[\"variety\"]\n";
+				+ "Y = mml_data[\""+this.predVar+"\"]\n";
 		
 		String TRAIN_TEST_SPLIT = "X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size="+ test_size +") \n";
 		
