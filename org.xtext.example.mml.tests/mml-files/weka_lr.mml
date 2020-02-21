@@ -1,6 +1,6 @@
 datainput "C:/CSVFile/iris.csv" 
 mlframework Weka 
-algorithm LogisticRegression
+algorithm LogisticRegression 
 formula "variety" 
 TrainingTest {percentageTraining 70}
 accuracy
