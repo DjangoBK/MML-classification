@@ -29,7 +29,7 @@ public class TestAll {
 	
 	//final String CSV_FOLDER = "\"C:/Users/pbril/Documents/R_workspace/iris.csv\"";
 //	final String CSV_FOLDER = "\"C:/Users/A730437/Documents/MIAGE/IDM/R_IDM/iris.csv\"";	
-	final String CSV_FOLDER = "\"C:/Users/pbril/Documents/M2 MIAGE/IDM/TP3/MML-classification/org.xtext.example.mml.tests/iris.csv\"";
+	final String CSV_FOLDER = "D:\\Perso\\Cours de fac\\Master\\Sem3\\IDM\\MML-classification\\org.xtext.example.mml.tests/iris.csv\"";
 	final static String MML_FOLDER = "mml-files/";
 	
 	/*
