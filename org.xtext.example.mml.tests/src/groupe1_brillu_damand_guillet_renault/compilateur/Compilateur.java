@@ -48,7 +48,8 @@ public class Compilateur {
 			}
 			else if(framworkLang == FrameworkLang.JAVA_WEKA) {
 				CompilateurWeka compilateur = new CompilateurWeka(result, mlcalgo);
-				execWeka(compilateur.traitement(), "weka", compilateur.getAlgoName(), compilateur.getDataSet());
+				String test = compilateur.traitement();
+				execWeka(test, "weka", compilateur.getAlgoName(), compilateur.getDataSet());
 			}
 		}
 	}
@@ -76,7 +77,8 @@ public class Compilateur {
 			String line;
 			Double metric = 0.0;
 			while ((line = in.readLine()) != null) {
-				metric = Double.parseDouble(line.split("= ")[1]);
+				if(!algo.equals("SVM"))
+					metric = Double.parseDouble(line.split("= ")[1]);
 		    }
 			long elapsedTime = System.nanoTime() - startTime;
 			sommeAcc += metric;
@@ -112,7 +114,10 @@ public class Compilateur {
 		    }
 			long elapsedTime = System.nanoTime() - startTime;
 			System.err.println("temps d'execution : " + elapsedTime/1000000000.0);
-			Double acc = Double.parseDouble(last_line);
+			Double acc = 0.0;
+			if(!last_line.isEmpty()) {
+				acc = Double.parseDouble(last_line);
+			}
 			sommeAcc += acc;
 			sommeDur += elapsedTime/1000000000.0;
 			rep++;
@@ -144,7 +149,10 @@ public class Compilateur {
 		    }
 			long elapsedTime = System.nanoTime() - startTime;
 			System.out.println(last);
-			double metric = Double.parseDouble(last);
+			double metric = 0.0;
+			if(!last.isEmpty()) {
+				metric = Double.parseDouble(last);
+			}
 			sommeAcc += metric;
 			sommeDur += elapsedTime/1000000000.0;
 			rep++;

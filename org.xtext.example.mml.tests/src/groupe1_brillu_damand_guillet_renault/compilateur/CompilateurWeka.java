@@ -51,6 +51,7 @@ String dataSet;
 			res+=traitementMetric();
 		}
 		else if (algo.getAlgorithm() instanceof SVM) {
+			setAlgoName("SVM");
 			String supported = "SVM indisponible avec le framework weka";
 			res += "System.out.println(\"SVM indisponible avec le framework weka\");\n" + 
 					"}\n"

@@ -274,7 +274,7 @@ public class CompilateurScikitLearn {
 	}
 	
 	public void setPredVar(String fileLocation, String separator) {
-		System.err.println("Formula : " + result.getFormula().getPredictors());
+		System.err.println("Formula : " + result.getFormula());
 		if(result.getFormula() != null) {
 			if(result.getFormula().getPredictive().getColName() != null) {
 				this.predVar = result.getFormula().getPredictive().getColName();
