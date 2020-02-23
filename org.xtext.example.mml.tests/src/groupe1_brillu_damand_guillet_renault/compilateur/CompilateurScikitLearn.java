@@ -68,6 +68,7 @@ public class CompilateurScikitLearn {
 		else if (this.algorithm.getAlgorithm() instanceof LogisticRegression) {
 			res += traitementLogisticRegression();
 			res += traitementMetrics();
+			System.out.println(res);
 		}
 		//res =  traitementImport() + res;
 		return res;
@@ -174,7 +175,6 @@ public class CompilateurScikitLearn {
 	/** Algo Logistic Regression**/
 	public String traitementLogisticRegression() {
 		setAlgo("LR");
-		
 		double test_size = result.getValidation().getStratification().getNumber()/100.0;
 		String size = "test_size = " + test_size +"\n";
 		
@@ -183,9 +183,8 @@ public class CompilateurScikitLearn {
 		
 		String TRAIN_TEST_SPLIT = "X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size="+ test_size +") \n";
 		
-		String algoSet = "logreg = LogisticRegression(C=1e5, solver='lbfgs', multi_class='multinomial')"
-				+ "logreg.fit(X, Y)";
-		
+		String algoSet = "logreg = LogisticRegression(C=1e5, solver='lbfgs', multi_class='multinomial') \n"
+				+ "clf = logreg.fit(X, Y) \n";
 		return size + split + TRAIN_TEST_SPLIT + algoSet;
 	}
 	
