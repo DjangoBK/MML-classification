@@ -23,44 +23,45 @@ import groupe1_brillu_damand_guillet_renault.compilateur.Compilateur;
 public class TestAll {
 	@Inject
 	ParseHelper<MMLModel> parseHelper;
-	
-	//final String CSV_FOLDER = "\"C:/Users/pbril/Documents/R_workspace/iris.csv\"";
+
+	// final String CSV_FOLDER =
+	// "\"C:/Users/pbril/Documents/R_workspace/iris.csv\"";
 //	final String CSV_FOLDER = "\"C:/Users/A730437/Documents/MIAGE/IDM/R_IDM/iris.csv\"";	
 	final String CSV_FOLDER = "D:\\Perso\\Cours de fac\\Master\\Semestre3_4\\IDM\\MML-classification\\org.xtext.example.mml.tests\\iris.csv";
 	final static String MML_FOLDER = "mml-files/";
-	
+
 	@Test
 	public void testFromFolder() throws Exception {
-		
-		//On recupere tous les noms de fichiers 
+
+		// On recupere tous les noms de fichiers
 		List<String> results = new ArrayList<String>();
 		File[] filesInFolder = new File(MML_FOLDER).listFiles();
 		for (File file : filesInFolder) {
 			System.out.println(file.getName());
 			BufferedReader mmlReader = new BufferedReader(new FileReader(file));
-			String lineR="";
-			String mml="";
+			String lineR = "";
+			String mml = "";
 			while ((lineR = mmlReader.readLine()) != null) {
 				mml += lineR;
 			}
 			MMLModel result = parseHelper.parse(mml);
-						
-			Compilateur.traitementAlgo(result);	
+
+			Compilateur.traitementAlgo(result);
 		}
 	}
-	
+
 	@Test
 	public void testOneFile() throws Exception {
 		File file = new File(MML_FOLDER + "scikit_lr.mml");
-		
+
 		BufferedReader mmlReader = new BufferedReader(new FileReader(file));
-		String lineR="";
-		String mml="";
+		String lineR = "";
+		String mml = "";
 		while ((lineR = mmlReader.readLine()) != null) {
 			mml += lineR;
 		}
 		MMLModel result = parseHelper.parse(mml);
-		
+
 		Compilateur.traitementAlgo(result);
 	}
 }

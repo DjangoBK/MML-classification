@@ -9,7 +9,7 @@ import org.xtext.example.mydsl.mml.RandomForest;
 import org.xtext.example.mydsl.mml.SVM;
 
 public class CompilateurXgBoost {
-	
+
 	MMLModel result;
 	String importList;
 	MLChoiceAlgorithm algorithm;
@@ -21,7 +21,7 @@ public class CompilateurXgBoost {
 		this.result = result;
 		this.algorithm = algorithm;
 	}
-	
+
 	public String getAlgo() {
 		return algo;
 	}
@@ -37,32 +37,27 @@ public class CompilateurXgBoost {
 	public void setDataset(String dataset) {
 		this.dataset = dataset;
 	}
-	
+
 	public void setPredVar(String fileLocation, String separator) {
 		System.err.println("Formula : " + result.getFormula());
-		if(result.getFormula() != null) {
-			if(result.getFormula().getPredictive().getColName() != null) {
+		if (result.getFormula() != null) {
+			if (result.getFormula().getPredictive().getColName() != null) {
 				this.predVar = result.getFormula().getPredictive().getColName();
-			}
-			else if(result.getFormula().getPredictive().getColumn() != 0) {
+			} else if (result.getFormula().getPredictive().getColumn() != 0) {
 				this.predVar = Utils.getCol(fileLocation, separator, result.getFormula().getPredictive().getColumn());
 			}
-		}
-		else {
+		} else {
 			this.predVar = Utils.getLastCol(fileLocation, separator);
 		}
 		System.out.println(predVar);
 	}
 
 	public String traitement() {
-		String res = "import numpy as np\r\n" + 
-				"import xgboost as xgb\r\n" + 
-				"from sklearn import datasets\r\n" + 
-				"from sklearn.cross_validation import train_test_split\r\n" + 
-				"from sklearn.datasets import dump_svmlight_file\r\n" + 
-				"from sklearn.externals import joblib\r\n" + 
-				"from sklearn.metrics import precision_score";
-		
+		String res = "import numpy as np\r\n" + "import xgboost as xgb\r\n" + "from sklearn import datasets\r\n"
+				+ "from sklearn.cross_validation import train_test_split\r\n"
+				+ "from sklearn.datasets import dump_svmlight_file\r\n" + "from sklearn.externals import joblib\r\n"
+				+ "from sklearn.metrics import precision_score";
+
 		DataInput dataInput = result.getInput();
 		String fileLocation = dataInput.getFilelocation();
 		String fileName = fileLocation.split("/")[fileLocation.split("/").length - 1].replace(".csv", "");
@@ -90,31 +85,31 @@ public class CompilateurXgBoost {
 		// res = traitementImport() + res;
 		return res;
 	}
-	
+
 	private static String mkValueInSingleQuote(String val) {
 		return "'" + val + "'";
 	}
-	
+
 	/** Algo SVM **/
 	public String traitementSVM() {
 		return algo;
 	}
-	
+
 	/** Algo DT **/
 	public String traitementDT() {
 		return algo;
 	}
-	
-	/** Algo Random Forest**/
+
+	/** Algo Random Forest **/
 	public String traitementRandomForest() {
 		return algo;
 	}
-	
-	/** Algo Logistic Regression**/
+
+	/** Algo Logistic Regression **/
 	public String traitementLogisticRegression() {
 		return algo;
 	}
-	
+
 	public String traitementMetrics() {
 		return algo;
 	}
