@@ -3,8 +3,6 @@ package groupe1_brillu_damand_guillet_renault.tests;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +14,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.xtext.example.mydsl.mml.MMLModel;
 import org.xtext.example.mydsl.tests.MmlInjectorProvider;
 
-import com.google.common.io.Files;
 import com.google.inject.Inject;
 
 import groupe1_brillu_damand_guillet_renault.compilateur.Compilateur;
@@ -27,9 +24,9 @@ public class TestAll {
 	@Inject
 	ParseHelper<MMLModel> parseHelper;
 	
-	final String CSV_FOLDER = "\"C:/Users/pbril/Documents/R_workspace/iris.csv\"";
+	//final String CSV_FOLDER = "\"C:/Users/pbril/Documents/R_workspace/iris.csv\"";
 //	final String CSV_FOLDER = "\"C:/Users/A730437/Documents/MIAGE/IDM/R_IDM/iris.csv\"";	
-//	final String CSV_FOLDER = "D:\\Perso\\Cours de fac\\Master\\Sem3\\IDM\\MML-classification\\org.xtext.example.mml.tests/iris.csv\"";
+	final String CSV_FOLDER = "D:\\Perso\\Cours de fac\\Master\\Semestre3_4\\IDM\\MML-classification\\org.xtext.example.mml.tests\\iris.csv";
 	final static String MML_FOLDER = "mml-files/";
 	
 	@Test

@@ -62,4 +62,15 @@ public class Utils {
 		}
     	return 0;
     }
+    
+
+    public static void displayConsole(String framework, String algo, String dataSet, Double sommeAcc ,Double sommeDur ,int compteur) {
+    	System.out.println("\n----------------- Infos ----------------\n");
+    	System.out.println("Dataset used : " + dataSet);
+		System.out.println("Framework used : " + framework);
+		System.out.println("Algo used : " + algo);
+		System.out.println("Moyenne accuracy = " + sommeAcc/compteur);
+		System.out.println("Moyenne temps = " + sommeDur/compteur);
+		System.out.println("\n----------------------------------------\n");
+    }
 }
