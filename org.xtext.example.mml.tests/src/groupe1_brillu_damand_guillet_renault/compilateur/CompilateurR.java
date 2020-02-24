@@ -31,7 +31,8 @@ public class CompilateurR {
 				"library(rpart.plot,quietly = TRUE)\r\n" + // DT
 				"library(rattle) \n" + // DT
 				"library(randomForest) \n" + // RF
-				"library(e1071) \n"; // all
+				"library(e1071) \n"//all
+				+ "library(nnet) \n";//LogisticRegression
 		DataInput dataInput = result.getInput();
 		String fileLocation = dataInput.getFilelocation();
 		String fileName = fileLocation.split("/")[fileLocation.split("/").length - 1].replace(".csv", "");
@@ -84,8 +85,20 @@ public class CompilateurR {
 
 	private String traitementLogisticRegression() {
 		setAlgoName("LR");
-		// TODO Auto-generated method stub
-		return null;
+		double test_size = result.getValidation().getStratification().getNumber() / 100.0;
+		String size = "test_size = " + test_size + "\n";
+		String nbVar = "nbVar <- dim(mml_data)[2]\n";
+		String sample = "train <- sample(1:nrow(mml_data),size = ceiling(test_size*nrow(mml_data)),replace = FALSE) \n";
+		String train = "train_set = mml_data[train,] \n";
+		String test = "test_set = mml_data[-train,] \n";
+		String x_test = "x_test <- mml_data[,1:(nbVar-1)] \n";
+		String y_test = "y_test <- mml_data[,nbVar] \n";
+		
+		String algoSet = "model_multi = multinom("+predVar.replace("\"", "")+" ~ ., data = train_set, trace = FALSE) \n";
+		algoSet += "pred <- predict(object=model_multi, x_test)\n";
+		String cm = "cm <- confusionMatrix(pred,y_test)\n";
+
+		return size + nbVar + sample + train + test + x_test + y_test + algoSet + cm;
 	}
 
 	private String traitementRandomForest() {
@@ -97,7 +110,7 @@ public class CompilateurR {
 		String train = "trainData <- mml_data[ind==1,] \n";
 		String test = "testData <- mml_data[ind==2,] \n";
 
-		String algoSet = "mml_data_rf <- randomForest(variety~.,data=trainData,ntree=100,proximity=TRUE) \n";
+		String algoSet = "mml_data_rf <- randomForest("+predVar.replace("\"", "")+"~.,data=trainData,ntree=100,proximity=TRUE) \n";
 		String predict = "pred <- predict(mml_data_rf) \n";
 		String cm = "cm <- confusionMatrix(predict(mml_data_rf),trainData$variety) \n";
 
