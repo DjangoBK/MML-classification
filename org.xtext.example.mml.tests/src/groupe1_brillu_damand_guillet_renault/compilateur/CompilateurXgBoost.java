@@ -1,5 +1,6 @@
 package groupe1_brillu_damand_guillet_renault.compilateur;
 
+import org.xtext.example.mydsl.mml.CrossValidation;
 import org.xtext.example.mydsl.mml.DT;
 import org.xtext.example.mydsl.mml.DataInput;
 import org.xtext.example.mydsl.mml.LogisticRegression;
@@ -7,6 +8,8 @@ import org.xtext.example.mydsl.mml.MLChoiceAlgorithm;
 import org.xtext.example.mydsl.mml.MMLModel;
 import org.xtext.example.mydsl.mml.RandomForest;
 import org.xtext.example.mydsl.mml.SVM;
+import org.xtext.example.mydsl.mml.TrainingTest;
+import org.xtext.example.mydsl.mml.ValidationMetric;
 
 public class CompilateurXgBoost {
 
@@ -54,7 +57,7 @@ public class CompilateurXgBoost {
 
 	public String traitement() {
 		String res = "import numpy as np\r\n" + "import xgboost as xgb\r\n" + "from sklearn import datasets\r\n"
-				+ "from sklearn.cross_validation import train_test_split\r\n"
+				+ "from sklearn.cross_validation import train_test_split\r\n" + "from xgboost import XGBClassifier\r\n"
 				+ "from sklearn.datasets import dump_svmlight_file\r\n" + "from sklearn.externals import joblib\r\n"
 				+ "from sklearn.metrics import precision_score";
 
@@ -72,14 +75,11 @@ public class CompilateurXgBoost {
 			res += traitementDT();
 			res += traitementMetrics();
 		} else if (this.algorithm.getAlgorithm() instanceof SVM) {
-			res += traitementSVM();
-			res += traitementMetrics();
+			res += "print(\"Non supporte pas XgBoot\")";
 		} else if (this.algorithm.getAlgorithm() instanceof RandomForest) {
-			res += traitementRandomForest();
-			res += traitementMetrics();
+			res += "print(\"Non supporte pas XgBoot\")";
 		} else if (this.algorithm.getAlgorithm() instanceof LogisticRegression) {
-			res += traitementLogisticRegression();
-			res += traitementMetrics();
+			res += "print(\"Non supporte pas XgBoot\")";
 			System.out.println(res);
 		}
 		// res = traitementImport() + res;
@@ -97,7 +97,18 @@ public class CompilateurXgBoost {
 
 	/** Algo DT **/
 	public String traitementDT() {
-		return algo;
+		setAlgo("DT");
+		double test_size = result.getValidation().getStratification().getNumber()/100.0;
+		String size = "test_size = " + test_size +"\n";
+		
+		String split = "X = mml_data.drop(columns=[\""+this.predVar+"\"])\n"
+				+ "Y = mml_data[\"variety\"]\n";
+		
+		String TRAIN_TEST_SPLIT = "X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size="+ test_size +") \n";
+		String model = "model = model = XGBClassifier()\n" + 
+						"model.fit(X_train, y_train)\n";
+		
+		return test_size + size + split + TRAIN_TEST_SPLIT + model;
 	}
 
 	/** Algo Random Forest **/
@@ -110,7 +121,57 @@ public class CompilateurXgBoost {
 		return algo;
 	}
 
+	public String traitementMetric(int i) {
+		if(this.result.getValidation().getStratification() instanceof TrainingTest) {
+			if(this.result.getValidation().getMetric().get(i) == ValidationMetric.ACCURACY) {
+				return "accuracy = accuracy_score(y_test, clf.predict(X_test))\r\n" + 
+						"\r\n" + 
+						"print(accuracy)";			
+			}
+			else if(this.result.getValidation().getMetric().get(i) == ValidationMetric.RECALL) {
+				return "recall = recall_score(y_test, clf.predict(X_test), average='macro')\n"
+						+ "print(recall)";
+			}
+			else if(this.result.getValidation().getMetric().get(i)==ValidationMetric.F1) {
+				return "precision = precision_score(y_test, clf.predict(X_test), average='macro')\r\n"
+						+ "print(precision)";
+			}
+			else if(this.result.getValidation().getMetric().get(i)==ValidationMetric.PRECISION) {
+				return "f1 = f1_score(y_test, clf.predict(X_test), average='macro')\r\n"
+						+ "print(f1)";
+			}
+			else {return null;}
+		}
+		else if(this.result.getValidation().getStratification() instanceof CrossValidation) {
+			if(this.result.getValidation().getMetric().get(i) == ValidationMetric.ACCURACY) {
+				return "accuracy = cross_val_score(y_test, clf.predict(X_test))\r\n" + 
+						"\r\n" + 
+						"print(accuracy)";			
+			}
+			else if(this.result.getValidation().getMetric().get(i) == ValidationMetric.RECALL) {
+				return "recall = recall_score(y_test, clf.predict(X_test), average='macro')\n"
+						+ "print(recall)";
+			}
+			else if(this.result.getValidation().getMetric().get(i)==ValidationMetric.F1) {
+				return "precision = precision_score(y_test, clf.predict(X_test), average='macro')\r\n"
+						+ "print(precision)";
+			}
+			else if(this.result.getValidation().getMetric().get(i)==ValidationMetric.PRECISION) {
+				return "f1 = f1_score(y_test, clf.predict(X_test), average='macro')\r\n"
+						+ "print(f1)";
+			}
+			else {return null;}
+		}
+		else {
+			return null;
+		}
+	}
+	
 	public String traitementMetrics() {
-		return algo;
+		String res = "";
+		for(int i = 0 ; i <this.result.getValidation().getMetric().size() ; i++) {
+			res += traitementMetric(i) + "\n";
+		}
+		return res;
 	}
 }
