@@ -2,7 +2,7 @@
 During this year of Master 2 MIAGE, in the context of Model Driven Engineering, our final project was to create a **Machine Learning DSL**. In this report, we will present the different steps of this project, from the creation of the grammar, to the Compiler creation and finally the benchmark of the different algorithms and framework.
 
 # Programming 
-In this first part, we will see teh different stages of the programming part. 
+In this first part, we will see the different stages of the programming part. 
 ## The grammar 
 The first thing to do was to create a grammar. The main goal of this grammar was to simplify the creation of Machine Learning algorithm. We first identified the information needed : the location of a dataset, the choice of framework, the choice of algorithm with different parameters and the choice of the metrics. Once our grammar done, we just had to run it on a new Eclipse and create a new file with the extension **".mml"**. We can use `Ctrl+space` to get the different options through auto-completion. 
 We used this to create a lot of **".mml"** files for a testing later. 
@@ -26,7 +26,7 @@ dataset ; framework ; algo ; accuracy ; execution time
  
 
 # Benchmark
-Now that the compiler and our performance saving system are working, we can compare teh results of all the algorithm. We chose the accuracy as metrics and the execution time. The idea to chose the best one is to keep a good accuracy while reducing the execution time. 
+Now that the compiler and our performance saving system are working, we can compare the results of all the algorithm. We chose the accuracy as metrics and the execution time. The idea to chose the best one is to keep a good accuracy while reducing the execution time. 
 ## Framework
 ![algo Decision Tree](https://github.com/DjangoBK/MML-classification/blob/master/capture_Histogramme/algo_DT.PNG)
 ![algo Logistic Regression](https://github.com/DjangoBK/MML-classification/blob/master/capture_Histogramme/algo_LR.PNG)
