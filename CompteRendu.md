@@ -27,12 +27,25 @@ dataset ; framework ; algo ; accuracy ; execution time
 
 # Benchmark
 Now that the compiler and our performance saving system are working, we can compare teh results of all the algorithm. We chose the accuracy as metrics and the execution time. The idea to chose the best one is to keep a good accuracy while reducing the execution time. 
-## Framework 
+## Framework
+
 
 We chose these two graphs because the others algorithms weren't coded in all the frameworks. We can see from this result that **scikit-learn** is the quickest, it's not always the most accurate one but the difference isn't enough significant to disqualify it. 
 Our conclusion on the framework is that **scikit-learn** is the better one.
 ## Algorithm
+![framework scitkit](https://github.com/DjangoBK/MML-classification/blob/master/capture_Histogramme/framework_Scikit-learn.PNG)
+![framework weka](https://github.com/DjangoBK/MML-classification/blob/master/capture_Histogramme/framework_Scikit-learn.PNG)
+![framework R](https://github.com/DjangoBK/MML-classification/blob/master/capture_Histogramme/framework_R.PNG)
 
 For the 3 frameworks, the Logistic Regression is the most accurate algorithm. It's not the quickest one, but the difference is in ms.
 # Conclusion
-To conclude, we can see that **Scikit-learn** is always the quickest framework with an execution time 0.5 to 1s quicker than **R** and **Weka**. The most accurate one seems to be **R** but the difference isn't very relevant in every case. 
+To conclude, we can see that *Scikit-learn* is always the quickest framework with an execution time 0.5 to 1s quicker than *R* and *Weka*. The most accurate one seems to be *R* but the difference isn't very relevant in every case. 
+## Issues 
+During this project, we faced multiples issues, we solved some of them but we didn't have the time to solve them all. 
+There is an issue when we use a different dataset with *R* and *Weka*, it seems to be an issue with the number of rows. 
+There are also algorithms unfinished : 
+	- SVM is not include in *Weka* 
+	- The calculation of accuracy with *R* isn't working (return 0)
+
+## Our feelings about this project
+We found this project very interesting. We didn't have a huge Machine Learning background, it was really interesting to learn about this topic. It also helped us understanding DSL, compilation transformation...
