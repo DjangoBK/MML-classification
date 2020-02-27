@@ -39,6 +39,12 @@ Our conclusion on the framework is that **scikit-learn** is the better one.
 ![framework R](https://github.com/DjangoBK/MML-classification/blob/master/capture_Histogramme/framework_R.PNG)
 
 For the 3 frameworks, the Logistic Regression is the most accurate algorithm. It's not the quickest one, but the difference is in ms.
+
+![framework scitkit](https://github.com/DjangoBK/MML-classification/blob/master/capture_Histogramme/framework_Iris.PNG)
+![framework scitkit](https://github.com/DjangoBK/MML-classification/blob/master/capture_Histogramme/framework_wine.PNG)
+
+Compared to another dataset, there are more variables and the execution time is less good
+
 # Conclusion
 To conclude, we can see that *Scikit-learn* is always the quickest framework with an execution time 0.5 to 1s quicker than *R* and *Weka*. The most accurate one seems to be *R* but the difference isn't very relevant in every case. 
 ## Issues 
